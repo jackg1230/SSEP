@@ -82,22 +82,57 @@ app.get('/api/trolley', async (req, res) => { // retreives products in user's tr
 
 
 
-app.post('/users', async (req, res) => { // adds a new user
-    const { email, password_hash, house_id, payment_info, public_trolley } = req.body;
+app.post('/users', async (req, res) => { 
+    const { email, password_hash, address, postcode, payment_info, public_trolley } = req.body;
 
     try {
-        const query = `
+        let house_id;
+
+        // Check if the house already exists
+        const houseQuery = `
+            SELECT house_id FROM house WHERE address = $1 AND postcode = $2;
+        `;
+        const houseValues = [address, postcode];
+        const houseResult = await pool.query(houseQuery, houseValues);
+
+        if (houseResult.rows.length > 0) {
+            // If the house exists, retrieve the house_id
+            house_id = houseResult.rows[0].house_id;
+            console.log(`House exists. Using house_id: ${house_id}`);
+        } else {
+            // Find the next available house_id
+            const nextHouseQuery = `
+                SELECT COALESCE(MAX(house_id) + 1, 1) AS next_house_id FROM house;
+            `;
+            const nextHouseResult = await pool.query(nextHouseQuery);
+            house_id = nextHouseResult.rows[0].next_house_id;
+
+            // Create a new house entry
+            const newHouseQuery = `
+                INSERT INTO house (house_id, address, postcode)
+                VALUES ($1, $2, $3);
+            `;
+            const newHouseValues = [house_id, address, postcode];
+            await pool.query(newHouseQuery, newHouseValues);
+            console.log(`New house created. house_id: ${house_id}`);
+        }
+
+        // Add the new user with the house_id
+        const userQuery = `
             INSERT INTO Users (email, password_hash, house_id, payment_info, public_trolley)
             VALUES ($1, $2, $3, $4, $5) RETURNING *;
         `;
-        const values = [email, password_hash, house_id,  payment_info, public_trolley];
-        const result = await pool.query(query, values);
-        res.status(201).json(result.rows[0]);
+        const userValues = [email, password_hash, house_id, payment_info, public_trolley];
+        const userResult = await pool.query(userQuery, userValues);
+
+        // Return the newly created user
+        res.status(201).json(userResult.rows[0]);
     } catch (err) {
         console.error('Error executing query:', err.stack);
         res.status(500).send('Database query error');
     }
 });
+
 
 app.get('/api/products', async (req, res) => { // gets products provided with a category
     const { Category } = req.query;
