@@ -29,13 +29,17 @@ app.use(express.json());
 
 
 app.get('/users', async (req, res) => { // gets all users
+    console.log('GET /users endpoint called'); // Debug log
     try {
-        const result = await pool.query('SELECT * FROM users;'); // Replace with your actual query
-        res.json(result.rows); // Send the retrieved data as JSON
+        const result = await pool.query('SELECT * FROM users;'); // Fetch users
+        console.log('Database query executed'); // Debug log
+        console.log(result.rows); // Log entire result for visibility
+
+        res.json(result.rows); // Respond with JSON
         
         // Log each user's email to the console
         result.rows.forEach(user => {
-            console.log(`User Email: ${user.email}`); 
+            console.log(`User Email: ${user.email}`);
         });
     } catch (err) {
         console.error('Error executing query:', err.stack);
