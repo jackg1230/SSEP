@@ -1,6 +1,5 @@
 const express = require('express');
 const { Pool } = require('pg'); // PostgreSQL client
-//require('dotenv').config(); // For environment variables (optional)
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Server port
@@ -21,7 +20,7 @@ pool.connect((err, client, release) => {
     } else {
         console.log('Connected to the PostgreSQL database!');
     }
-    release(); // Releases the client back to the pool
+    release(); 
 });
 
 
@@ -33,10 +32,8 @@ app.get('/users', async (req, res) => { // gets all users
     try {
         const result = await pool.query('SELECT * FROM users;'); // Fetch users
         console.log('Database query executed'); // Debug log
-        console.log(result.rows); // Log entire result for visibility
-
+        console.log(result.rows);
         res.json(result.rows); // Respond with JSON
-        
         // Log each user's email to the console
         result.rows.forEach(user => {
             console.log(`User Email: ${user.email}`);
@@ -134,7 +131,7 @@ app.post('/users', async (req, res) => {
 });
 
 
-app.get('/api/products', async (req, res) => { // gets products provided with a category
+app.get('/api/productscat', async (req, res) => { // gets products provided with a category
     const { Category } = req.query;
     try {
         
@@ -157,6 +154,56 @@ app.get('/api/products', async (req, res) => { // gets products provided with a 
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+app.get('/api/products', async (req, res) => { // gets all products
+    try {
+        const query = `
+            SELECT "ID", "Name", "Description", "Price", "ItemURL", "Shop", "Promotion", "Category" FROM products;
+        `;
+        const result = await pool.query(query); // Query the database for all products
+
+        res.status(200).json(result.rows); // Respond with the retrieved products as JSON
+    } catch (err) {
+        console.error('Database query error:', err); // Log the error to the console
+        res.status(500).json({ error: 'Internal server error' }); // Send an error response to the client
+    }
+});
+
+app.get('/api/products/search', async (req, res) => {
+    const { field, value } = req.query;
+
+    // Validate input
+    if (!field || !value) {
+        return res.status(400).json({ error: 'Both "field" and "value" query parameters are required.' });
+    }
+
+    try {
+        // Sanitize field name to prevent SQL injection
+        const allowedFields = ['ID', 'Name', 'Description', 'Price', 'ItemURL', 'Shop', 'Promotion', 'Category'];
+        if (!allowedFields.includes(field)) {
+            return res.status(400).json({ error: 'Invalid field name provided.' });
+        }
+
+        // Dynamic query with parameterized values to prevent SQL injection
+        const query = `
+            SELECT "ID", "Name", "Description", "Price", "ItemURL", "Shop", "Promotion", "Category" 
+            FROM products 
+            WHERE "${field}" = $1;
+        `;
+        const result = await pool.query(query, [value]);
+
+        // Respond with results
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'No products found matching the criteria.' });
+        }
+
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error('Database query error:', err); // Log the error
+        res.status(500).json({ error: 'Internal server error' }); // Send an error response
+    }
+});
+
 
 
 // Start the server
