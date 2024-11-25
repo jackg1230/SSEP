@@ -5,30 +5,30 @@ const { Pool } = require('pg'); // PostgreSQL client
 const app = express();
 const PORT = process.env.PORT || 3000; // Server port
 
-// Database configuration
+
 const pool = new Pool({
-    host: '94.174.1.192', // Database host
-    user: 'ssep1',        // Database username
-    password: 'SSEP123!', // Database password
-    database: 'ssh_grocery', // Database name
-    port: 5432            // Default PostgreSQL port
+    host: '94.174.1.192', 
+    user: 'ssep1',
+    password: 'SSEP123!',
+    database: 'ssh_grocery',
+    port: 5432
 });
 
-// Test the database connection
+// Tests the database connection
 pool.connect((err, client, release) => {
     if (err) {
         console.error('Error connecting to the database:', err.stack);
     } else {
         console.log('Connected to the PostgreSQL database!');
     }
-    release(); // Release the client back to the pool
+    release(); // Releases the client back to the pool
 });
 
-// Middleware for parsing JSON
+
 app.use(express.json());
 
-// Example route to fetch all users
-app.get('/users', async (req, res) => {
+
+app.get('/users', async (req, res) => { // gets all users
     try {
         const result = await pool.query('SELECT * FROM users;'); // Replace with your actual query
         res.json(result.rows); // Send the retrieved data as JSON
@@ -38,16 +38,43 @@ app.get('/users', async (req, res) => {
         res.status(500).send('Database query error');
     }
 });
-pool.query('SELECT * FROM users', (err, result) => {
-    if (err) {
-        console.error('Database query error:', err.stack);
-    } else {
-        console.log('Database query result:', result.rows);
+
+app.get('/api/trolley', async (req, res) => { // retreives products in user's trolley 
+    const { user_id } = req.query;
+
+    if (!user_id) {
+        return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    try {
+        
+        const query = `
+            SELECT 
+                p."ID", 
+                p."Name" AS product_name, 
+                p."Price", 
+                t."quantity"
+            FROM "trolley" t
+            INNER JOIN "products" p ON t."product_id" = p."ID"
+            WHERE t."user_id" = $1;
+        `;
+        const values = [user_id];
+        const result = await pool.query(query, values);
+
+        if (result.rows.length === 0) {
+            return res.status(200).json({ message: 'Trolley is empty', items: [] });
+        }
+
+        res.status(200).json({ items: result.rows });
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-// Example route to add a new user
-app.post('/users', async (req, res) => {
+
+
+app.post('/users', async (req, res) => { // adds a new user
     const { email, password_hash, house_id, address, payment_info, public_trolley } = req.body;
 
     try {
@@ -63,6 +90,31 @@ app.post('/users', async (req, res) => {
         res.status(500).send('Database query error');
     }
 });
+
+app.get('/api/products', async (req, res) => { // gets products provided with a category
+    const { Category } = req.query;
+    try {
+        
+        if (!Category) {
+            return res.status(400).json({ error: 'Category is required' });
+        }
+
+
+        const query = `
+            SELECT * FROM products WHERE "Category" = $1;
+        `;
+        const values = [Category];
+        const result = await pool.query(query, values);
+
+        
+        res.status(200).json(result.rows);
+    } catch (err) {
+        
+        console.error('Database query error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
 // Start the server
 app.listen(PORT, () => {
