@@ -1,0 +1,20 @@
+[
+    {
+        "Item_ID": "1",
+        "Name": "Apple",
+        "Shop": "FreshMart",
+        "Price": "1.50"
+    },
+    {
+        "Item_ID": "2",
+        "Name": "Banana",
+        "Shop": "FruitShop",
+        "Price": "0.50"
+    },
+    {
+        "Item_ID": "3",
+        "Name": "Apple",
+        "Shop": "FreshMart",
+        "Price": "1.60"
+    }
+]
