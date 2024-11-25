@@ -1,30 +1,23 @@
 import React from 'react';
 import './App.css';
-
-function Header() {
-  return (
-    <header className="app-header">
-      <h1>SSH Group Grocery Order System</h1>
-    </header>
-  );
-}
-
-function MainContent() {
-  return (
-    <main className="app-content">
-      <p>Template</p>
-    </main>
-  );
-}
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './components/Header/Header';
+import Homepage from './components/Homepage/Homepage';
+import SettingsPage from './components/Settings/SettingsPage';
+import GroupOrderPage from './components/GroupOrder/GroupOrderPage'; 
 
 function App() {
   return (
-    <div className="app-container">
+    <Router>
       <Header />
       <div className="app-body">
-        <MainContent />
+        <Routes>
+          <Route path="/" element={<Homepage />} />  {/* Home page with categories and offers */}
+          <Route path="/settings" element={<SettingsPage />} />  {/* Settings page */}
+          <Route path="/orders" element={<GroupOrderPage />} />  {/* Order management page */}
+        </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 
