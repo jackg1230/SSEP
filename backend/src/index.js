@@ -83,14 +83,14 @@ app.get('/api/trolley', async (req, res) => { // retreives products in user's tr
 
 
 app.post('/users', async (req, res) => { // adds a new user
-    const { email, password_hash, house_id, address, payment_info, public_trolley } = req.body;
+    const { email, password_hash, house_id, payment_info, public_trolley } = req.body;
 
     try {
         const query = `
-            INSERT INTO Users (email, password_hash, house_id, address, payment_info, public_trolley)
-            VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;
+            INSERT INTO Users (email, password_hash, house_id, payment_info, public_trolley)
+            VALUES ($1, $2, $3, $4, $5) RETURNING *;
         `;
-        const values = [email, password_hash, house_id, address, payment_info, public_trolley];
+        const values = [email, password_hash, house_id,  payment_info, public_trolley];
         const result = await pool.query(query, values);
         res.status(201).json(result.rows[0]);
     } catch (err) {
