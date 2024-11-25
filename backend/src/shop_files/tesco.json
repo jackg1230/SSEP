@@ -1,0 +1,17 @@
+[
+    {
+        "Name": "Apples",
+        "Shop": "Tesco",
+        "Price": "£1.20"
+    },
+    {
+        "Name": "Bananas",
+        "Shop": "Tesco",
+        "Price": "£0.60"
+    },
+    {
+        "Name": "Oranges",
+        "Shop": "Tesco",
+        "Price": "£1.10"
+    }
+]
