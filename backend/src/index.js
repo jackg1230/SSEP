@@ -32,7 +32,11 @@ app.get('/users', async (req, res) => { // gets all users
     try {
         const result = await pool.query('SELECT * FROM users;'); // Replace with your actual query
         res.json(result.rows); // Send the retrieved data as JSON
-        console.log(result.rows);
+        
+        // Log each user's email to the console
+        result.rows.forEach(user => {
+            console.log(`User Email: ${user.email}`); 
+        });
     } catch (err) {
         console.error('Error executing query:', err.stack);
         res.status(500).send('Database query error');
