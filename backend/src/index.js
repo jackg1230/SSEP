@@ -118,5 +118,5 @@ app.get('/api/products', async (req, res) => { // gets products provided with a 
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://94.174.1.192:${PORT}`);
 });
