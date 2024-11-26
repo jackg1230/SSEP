@@ -26,6 +26,39 @@ pool.connect((err, client, release) => {
 
 app.use(express.json());
 
+app.get('/api/products/fetch', async (req, res) => {
+    const { field } = req.query;
+
+    if (!field) {
+        return res.status(400).json({ error: 'Field name is required.' });
+    }
+
+    try {
+        // Sanitize field name to prevent SQL injection
+        const allowedFields = ['ID', 'Name', 'Description', 'Price', 'ItemURL', 'Shop', 'Promotion', 'Category'];
+        if (!allowedFields.includes(field)) {
+            return res.status(400).json({ error: 'Invalid field name provided.' });
+        }
+
+        // Query to fetch all non-NULL values for the specified field
+        const query = `
+            SELECT "${field}" 
+            FROM products 
+            WHERE "${field}" IS NOT NULL;
+        `;
+        const result = await pool.query(query);
+
+        // Respond with the results
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: `No non-NULL values found for field "${field}".` });
+        }
+
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error('Database query error:', err); // Log the error
+        res.status(500).json({ error: 'Internal server error' }); // Send an error response
+    }
+});
 
 app.get('/users', async (req, res) => { // gets all users
     console.log('GET /users endpoint called'); // Debug log
