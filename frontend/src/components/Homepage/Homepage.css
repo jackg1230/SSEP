@@ -1,38 +1,59 @@
-.quantity-selector {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.homepage {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #E0F7FA;
 }
 
-.quantity-selector button {
-  background-color: #1565c0;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.quantity-selector button:hover {
-  background-color: #0d47a1;
-}
-
-.quantity-selector span {
-  font-size: 1rem;
-  font-weight: bold;
-  width: 30px;
+header h1 {
   text-align: center;
+  color: #003366;
+  margin-bottom: 20px;
 }
 
-.products-table td button {
-  background-color: #1565c0;
+.table-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.products-table th, .products-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.products-table th {
+  background-color: #003366;
   color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
-.products-table td button:hover {
-  background-color: #0d47a1;
+.products-table td img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.table-header {
+  background-color: #003366;
+  color: white;
+  font-size: 1.5em;
+  text-align: center;
+  padding: 20px;
 }
