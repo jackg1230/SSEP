@@ -1,18 +1,14 @@
-
 const { Pool } = require('pg'); // PostgreSQL client
-const fs = require('fs');
-const https = require('https');
 const express = require('express');
 const cors = require('cors');
-const app = express();
-const PORT = process.env.PORT || 3000; // Default HTTPS port is 443
-app.use(cors());
-// Load SSL/TLS certificate and private key
-const options = {
-    key: fs.readFileSync('./server.key'), // Replace with the path to your private key
-    cert: fs.readFileSync('./server.cert') // Replace with the path to your certificate
-};
 
+const app = express();
+const PORT = process.env.PORT || 3000; // Default HTTP port is 3000
+
+app.use(cors()); // Enable CORS
+app.use(express.json()); // Parse JSON bodies
+
+// PostgreSQL pool configuration
 const pool = new Pool({
     host: '94.174.1.192', 
     user: 'ssep1',
@@ -21,19 +17,17 @@ const pool = new Pool({
     port: 5432
 });
 
-// Tests the database connection
+// Test database connection
 pool.connect((err, client, release) => {
     if (err) {
         console.error('Error connecting to the database:', err.stack);
     } else {
         console.log('Connected to the PostgreSQL database!');
     }
-    release(); 
+    release();
 });
 
-
-app.use(express.json());
-
+// Fetch products by a specific field
 app.get('/api/products/fetch', async (req, res) => {
     const { field } = req.query;
 
@@ -42,13 +36,11 @@ app.get('/api/products/fetch', async (req, res) => {
     }
 
     try {
-        // Sanitize field name to prevent SQL injection
         const allowedFields = ['ID', 'Name', 'Description', 'Price', 'ItemURL', 'Shop', 'Promotion', 'Category'];
         if (!allowedFields.includes(field)) {
             return res.status(400).json({ error: 'Invalid field name provided.' });
         }
 
-        // Query to fetch all records where the specified field is not NULL
         const query = `
             SELECT * 
             FROM products 
@@ -56,20 +48,19 @@ app.get('/api/products/fetch', async (req, res) => {
         `;
         const result = await pool.query(query);
 
-        // Respond with the results
         if (result.rows.length === 0) {
             return res.status(404).json({ message: `No records found with non-NULL values in field "${field}".` });
         }
 
         res.status(200).json(result.rows);
     } catch (err) {
-        console.error('Database query error:', err); // Log the error
-        res.status(500).json({ error: 'Internal server error' }); // Send an error response
+        console.error('Database query error:', err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-
-app.get('/api/trolley', async (req, res) => { // retreives products in user's trolley 
+// Fetch products in a user's trolley
+app.get('/api/trolley', async (req, res) => {
     const { user_id } = req.query;
 
     if (!user_id) {
@@ -77,7 +68,6 @@ app.get('/api/trolley', async (req, res) => { // retreives products in user's tr
     }
 
     try {
-        
         const query = `
             SELECT 
                 p."ID", 
@@ -102,15 +92,13 @@ app.get('/api/trolley', async (req, res) => { // retreives products in user's tr
     }
 });
 
-
-
-app.post('/users', async (req, res) => { 
+// Add a new user
+app.post('/users', async (req, res) => {
     const { email, password_hash, address, postcode, payment_info, public_trolley } = req.body;
 
     try {
         let house_id;
 
-        // Check if the house already exists
         const houseQuery = `
             SELECT house_id FROM house WHERE address = $1 AND postcode = $2;
         `;
@@ -118,28 +106,22 @@ app.post('/users', async (req, res) => {
         const houseResult = await pool.query(houseQuery, houseValues);
 
         if (houseResult.rows.length > 0) {
-            // If the house exists, retrieve the house_id
             house_id = houseResult.rows[0].house_id;
-            console.log(`House exists. Using house_id: ${house_id}`);
         } else {
-            // Find the next available house_id
             const nextHouseQuery = `
                 SELECT COALESCE(MAX(house_id) + 1, 1) AS next_house_id FROM house;
             `;
             const nextHouseResult = await pool.query(nextHouseQuery);
             house_id = nextHouseResult.rows[0].next_house_id;
 
-            // Create a new house entry
             const newHouseQuery = `
                 INSERT INTO house (house_id, address, postcode)
                 VALUES ($1, $2, $3);
             `;
             const newHouseValues = [house_id, address, postcode];
             await pool.query(newHouseQuery, newHouseValues);
-            console.log(`New house created. house_id: ${house_id}`);
         }
 
-        // Add the new user with the house_id
         const userQuery = `
             INSERT INTO Users (email, password_hash, house_id, payment_info, public_trolley)
             VALUES ($1, $2, $3, $4, $5) RETURNING *;
@@ -147,7 +129,6 @@ app.post('/users', async (req, res) => {
         const userValues = [email, password_hash, house_id, payment_info, public_trolley];
         const userResult = await pool.query(userQuery, userValues);
 
-        // Return the newly created user
         res.status(201).json(userResult.rows[0]);
     } catch (err) {
         console.error('Error executing query:', err.stack);
@@ -155,55 +136,15 @@ app.post('/users', async (req, res) => {
     }
 });
 
-
-app.get('/api/productscat', async (req, res) => { // gets products provided with a category
-    const { Category } = req.query;
-    try {
-        
-        if (!Category) {
-            return res.status(400).json({ error: 'Category is required' });
-        }
-
-
-        const query = `
-            SELECT * FROM products WHERE "Category" = $1;
-        `;
-        const values = [Category];
-        const result = await pool.query(query, values);
-
-        
-        res.status(200).json(result.rows);
-    } catch (err) {
-        
-        console.error('Database query error:', err);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-app.get('/api/products', async (req, res) => { // gets all products
-    try {
-        const query = `
-            SELECT "ID", "Name", "Description", "Price", "ItemURL", "Shop", "Promotion", "Category" FROM products;
-        `;
-        const result = await pool.query(query); // Query the database for all products
-
-        res.status(200).json(result.rows); // Respond with the retrieved products as JSON
-    } catch (err) {
-        console.error('Database query error:', err); // Log the error to the console
-        res.status(500).json({ error: 'Internal server error' }); // Send an error response to the client
-    }
-});
-
+// User login
 app.get('/api/userlogin', async (req, res) => {
     const { email, password_hash } = req.query;
 
-    // Validate inputs
     if (!email || !password_hash) {
         return res.status(400).json({ error: 'Both "email" and "password_hash" are required.' });
     }
 
     try {
-        // Query to find the user by email and password_hash
         const query = `
             SELECT 
                 "house_id", 
@@ -215,54 +156,18 @@ app.get('/api/userlogin', async (req, res) => {
         const values = [email, password_hash];
         const result = await pool.query(query, values);
 
-        // Check if a user is found
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: 'No user found with the provided email and password_hash.' });
+            return res.status(404).json({ error: 'Invalid login credentials.' });
         }
 
-        // Respond with the user's details
         res.status(200).json(result.rows[0]);
     } catch (err) {
-        console.error('Database query error:', err); // Log the error
-        res.status(500).json({ error: 'Internal server error' }); // Send an error response
+        console.error('Database query error:', err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-app.get('/api/products/search', async (req, res) => {
-    const { field, value } = req.query;
-
-    // Validate input
-    if (!field || !value) {
-        return res.status(400).json({ error: 'Both "field" and "value" query parameters are required.' });
-    }
-
-    try {
-        // Sanitize field name to prevent SQL injection
-        const allowedFields = ['ID', 'Name', 'Description', 'Price', 'ItemURL', 'Shop', 'Promotion', 'Category'];
-        if (!allowedFields.includes(field)) {
-            return res.status(400).json({ error: 'Invalid field name provided.' });
-        }
-
-        // Dynamic query with parameterized values to prevent SQL injection
-        const query = `
-            SELECT "ID", "Name", "Description", "Price", "ItemURL", "Shop", "Promotion", "Category" 
-            FROM products 
-            WHERE "${field}" = $1;
-        `;
-        const result = await pool.query(query, [value]);
-
-        // Respond with results
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'No products found matching the criteria.' });
-        }
-
-        res.status(200).json(result.rows);
-    } catch (err) {
-        console.error('Database query error:', err); // Log the error
-        res.status(500).json({ error: 'Internal server error' }); // Send an error response
-    }
-});
-
+// Add an item to the trolley
 app.post('/api/trolley/add', async (req, res) => {
     const { user_id, product_id, quantity } = req.body;
 
@@ -271,13 +176,11 @@ app.post('/api/trolley/add', async (req, res) => {
     }
 
     try {
-        // Step 1: Get the latest trolley_id
         const lastIdQuery = `SELECT MAX(trolley_id) AS last_id FROM trolley;`;
         const lastIdResult = await pool.query(lastIdQuery);
-        const lastId = lastIdResult.rows[0].last_id || 0; // Default to 0 if no rows exist
+        const lastId = lastIdResult.rows[0].last_id || 0;
         const newTrolleyId = lastId + 1;
 
-        // Step 2: Insert the new item into the trolley
         const insertQuery = `
             INSERT INTO trolley (trolley_id, user_id, product_id, quantity)
             VALUES ($1, $2, $3, $4);
@@ -292,6 +195,7 @@ app.post('/api/trolley/add', async (req, res) => {
     }
 });
 
+// Remove an item from the trolley
 app.delete('/api/trolley/remove', async (req, res) => {
     const { user_id, product_id } = req.body;
 
@@ -313,8 +217,8 @@ app.delete('/api/trolley/remove', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-// Start HTTPS server
-https.createServer(options, app).listen(PORT, () => {
-    console.log(`HTTPS server running on https://localhost:${PORT}`);
-});
 
+// Start HTTP server
+app.listen(PORT, () => {
+    console.log(`HTTP server running on http://localhost:${PORT}`);
+});

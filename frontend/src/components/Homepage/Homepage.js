@@ -8,7 +8,7 @@ function Homepage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://94.174.1.192:3000/api/products/fetch?field=Promotion");
+        const response = await fetch("http://94.174.1.192:3000/api/products/fetch?field=Promotion");
         const data = await response.json();
         
         // Map API to table fields

@@ -14,7 +14,7 @@ const LoginPage = () => {
 
         try {
             const response = await fetch(
-                `https://94.174.1.192:3000/api/userlogin?email=${encodeURIComponent(
+                `http://94.174.1.192:3000/api/userlogin?email=${encodeURIComponent(
                     email
                 )}&password_hash=${encodeURIComponent(password)}`,
                 { method: 'GET' }
