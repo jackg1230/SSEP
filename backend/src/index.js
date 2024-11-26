@@ -1,9 +1,17 @@
-const express = require('express');
+
 const { Pool } = require('pg'); // PostgreSQL client
+const fs = require('fs');
+const https = require('https');
+const express = require('express');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Server port
+const PORT = process.env.PORT || 3000; // Default HTTPS port is 443
 
+// Load SSL/TLS certificate and private key
+const options = {
+    key: fs.readFileSync('./server.key'), // Replace with the path to your private key
+    cert: fs.readFileSync('./server.cert') // Replace with the path to your certificate
+};
 
 const pool = new Pool({
     host: '94.174.1.192', 
@@ -238,9 +246,8 @@ app.get('/api/products/search', async (req, res) => {
     }
 });
 
-
-
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server running on http://94.174.1.192:${PORT}`);
+// Start HTTPS server
+https.createServer(options, app).listen(PORT, () => {
+    console.log(`HTTPS server running on https://localhost:${PORT}`);
 });
+
