@@ -7,29 +7,31 @@ import LoginPage from './components/Login/LoginPage';
 import Homepage from './components/Homepage/Homepage';
 import SettingsPage from './components/Settings/SettingsPage';
 import GroupOrderPage from './components/GroupOrder/GroupOrderPage';
+import SearchPage from "./components/SearchPage/SearchPage";
 
 function AppContent() {
-    const location = useLocation(); // Moved inside Router
-    const showHeader = location.pathname !== '/'; // Show Header only if not on login page
-
+    const location = useLocation();
+    const showHeader = location.pathname !== "/";
+  
     return (
-        <>
-            {showHeader && <Header />}
-            <Routes>
-                <Route path="/" element={<LoginPage />} />
-                <Route path="/home" element={<Homepage />} />
-                <Route path="/settings" element={<SettingsPage />} />
-                <Route path="/orders" element={<GroupOrderPage />} />
-            </Routes>
-        </>
+      <>
+        {showHeader && <Header />}
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/home" element={<Homepage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/orders" element={<GroupOrderPage />} />
+          <Route path="/search" element={<SearchPage />} /> 
+        </Routes>
+      </>
     );
-}
+  }
 
 function App() {
     return (
         <UserProvider>
             <Router>
-                <AppContent /> {/* Place AppContent inside the Router */}
+                <AppContent />
             </Router>
         </UserProvider>
     );
