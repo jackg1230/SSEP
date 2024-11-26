@@ -1,0 +1,1 @@
+To start the web application navigate to ../frontend/src and run npm start, this will launch the webpage on your browser

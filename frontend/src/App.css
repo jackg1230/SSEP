@@ -1,30 +1,78 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-  }
-  
-  .app-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  
-  .app-header {
-    background-color: #0c5bab;
-    color: rgb(189, 185, 185);
-    text-align: center;
-  }
-  
-  .app-body {
-    text-align: center;
-    display: flex;
-    flex: 1;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #e0f7fa; /* Light blue background */
+  color: #333; /* Neutral text color */
+}
 
-  .app-content {
-    flex: 1;
-    padding: 1rem;
-    background-color: rgb(189, 185, 185);
-  }
-  
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  color: #fff; /* White text for headers */
+}
+
+/* Header Styling */
+header {
+  background-color: #1565c0; /* Dark blue header */
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Container */
+.table-container {
+  margin: 2rem auto;
+  padding: 1rem;
+  max-width: 80%;
+  background: white; /* Contrast table background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table th, .products-table td {
+  text-align: left;
+  padding: 12px 15px;
+}
+
+.products-table th {
+  background-color: #1565c0; /* Dark blue table header */
+  color: white;
+}
+
+.products-table td {
+  border-bottom: 1px solid #ddd;
+}
+
+.products-table tr:hover {
+  background-color: #f1f1f1; /* Highlight row on hover */
+}
+
+/* Button Styles (if needed) */
+button {
+  background-color: #1565c0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0d47a1;
+}
+
+/* Links */
+a {
+  color: #1565c0;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
