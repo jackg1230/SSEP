@@ -280,6 +280,56 @@ app.get('/api/products/search', async (req, res) => {
     }
 });
 
+app.post('/api/trolley/add', async (req, res) => {
+    const { user_id, product_id, quantity } = req.body;
+
+    if (!user_id || !product_id || !quantity) {
+        return res.status(400).json({ error: 'user_id, product_id, and quantity are required.' });
+    }
+
+    try {
+        // Step 1: Get the latest trolley_id
+        const lastIdQuery = `SELECT MAX(trolley_id) AS last_id FROM trolley;`;
+        const lastIdResult = await pool.query(lastIdQuery);
+        const lastId = lastIdResult.rows[0].last_id || 0; // Default to 0 if no rows exist
+        const newTrolleyId = lastId + 1;
+
+        // Step 2: Insert the new item into the trolley
+        const insertQuery = `
+            INSERT INTO trolley (trolley_id, user_id, product_id, quantity)
+            VALUES ($1, $2, $3, $4);
+        `;
+        const values = [newTrolleyId, user_id, product_id, quantity];
+        await pool.query(insertQuery, values);
+
+        res.status(200).json({ message: 'Item added to trolley.', trolley_id: newTrolleyId });
+    } catch (err) {
+        console.error('Error adding to trolley:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.delete('/api/trolley/remove', async (req, res) => {
+    const { user_id, product_id } = req.body;
+
+    if (!user_id || !product_id) {
+        return res.status(400).json({ error: 'user_id and product_id are required.' });
+    }
+
+    try {
+        const query = `
+            DELETE FROM trolley 
+            WHERE user_id = $1 AND product_id = $2;
+        `;
+        const values = [user_id, product_id];
+        await pool.query(query, values);
+
+        res.status(200).json({ message: 'Item removed from trolley.' });
+    } catch (err) {
+        console.error('Error removing item from trolley:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 // Start HTTPS server
 https.createServer(options, app).listen(PORT, () => {
     console.log(`HTTPS server running on https://localhost:${PORT}`);
