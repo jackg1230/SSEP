@@ -69,23 +69,6 @@ app.get('/api/products/fetch', async (req, res) => {
 });
 
 
-app.get('/users', async (req, res) => { // gets all users
-    console.log('GET /users endpoint called'); // Debug log
-    try {
-        const result = await pool.query('SELECT * FROM users;'); // Fetch users
-        console.log('Database query executed'); // Debug log
-        console.log(result.rows);
-        res.json(result.rows); // Respond with JSON
-        // Log each user's email to the console
-        result.rows.forEach(user => {
-            console.log(`User Email: ${user.email}`);
-        });
-    } catch (err) {
-        console.error('Error executing query:', err.stack);
-        res.status(500).send('Database query error');
-    }
-});
-
 app.get('/api/trolley', async (req, res) => { // retreives products in user's trolley 
     const { user_id } = req.query;
 
