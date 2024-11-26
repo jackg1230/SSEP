@@ -40,9 +40,9 @@ app.get('/api/products/fetch', async (req, res) => {
             return res.status(400).json({ error: 'Invalid field name provided.' });
         }
 
-        // Query to fetch all non-NULL values for the specified field
+        // Query to fetch all records where the specified field is not NULL
         const query = `
-            SELECT "${field}" 
+            SELECT * 
             FROM products 
             WHERE "${field}" IS NOT NULL;
         `;
@@ -50,7 +50,7 @@ app.get('/api/products/fetch', async (req, res) => {
 
         // Respond with the results
         if (result.rows.length === 0) {
-            return res.status(404).json({ message: `No non-NULL values found for field "${field}".` });
+            return res.status(404).json({ message: `No records found with non-NULL values in field "${field}".` });
         }
 
         res.status(200).json(result.rows);
@@ -59,6 +59,7 @@ app.get('/api/products/fetch', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' }); // Send an error response
     }
 });
+
 
 app.get('/users', async (req, res) => { // gets all users
     console.log('GET /users endpoint called'); // Debug log
