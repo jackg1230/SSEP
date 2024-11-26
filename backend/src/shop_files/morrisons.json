@@ -1,0 +1,17 @@
+[
+    {
+        "Name": "Carrots",
+        "Shop": "Morrisons",
+        "Price": "£0.89"
+    },
+    {
+        "Name": "Broccoli",
+        "Shop": "Morrisons",
+        "Price": "£1.35"
+    },
+    {
+        "Name": "Potatoes",
+        "Shop": "Morrisons",
+        "Price": "£0.50"
+    }
+]

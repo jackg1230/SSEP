@@ -1,0 +1,17 @@
+[
+    {
+        "Name": "Milk",
+        "Shop": "Lidl",
+        "Price": "£1.10"
+    },
+    {
+        "Name": "Eggs",
+        "Shop": "Lidl",
+        "Price": "£1.99"
+    },
+    {
+        "Name": "Cheese",
+        "Shop": "Lidl",
+        "Price": "£2.50"
+    }
+]
