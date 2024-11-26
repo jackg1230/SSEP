@@ -1,31 +1,38 @@
-.homepage {
-  padding: 20px;
-}
-
-.content {
+.quantity-selector {
   display: flex;
-  gap: 30px;
+  align-items: center;
+  gap: 5px;
 }
 
-h2 {
-  font-size: 24px;
-  color: #333;
+.quantity-selector button {
+  background-color: #1565c0;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.quantity-selector button:hover {
+  background-color: #0d47a1;
 }
 
-ul li {
-  margin: 10px 0;
+.quantity-selector span {
+  font-size: 1rem;
+  font-weight: bold;
+  width: 30px;
+  text-align: center;
 }
 
-ul li a {
-  color: #4CAF50;
-  text-decoration: none;
+.products-table td button {
+  background-color: #1565c0;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-ul li a:hover {
-  text-decoration: underline;
+.products-table td button:hover {
+  background-color: #0d47a1;
 }
