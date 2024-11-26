@@ -180,22 +180,22 @@ app.get('/api/search', async (req, res) => {
     try {
         // Finds products where the name or description matches the term
         const query = `
-            SELECT "ID", "Name", "Description", "Price", "Category"
+            SELECT "ID", "Name", "Description", "Price", "Category", "Shop"
             FROM products
-            WHERE "Name" ILIKE $1 OR "Description" ILIKE $1;
+            WHERE "Name" ILIKE $1;
         `;
         const values = [`%${term}%`]; // Wildcard search
         // term is placed in an array to prevent SQL injections
 
         const result = await pool.query(query, values);
 
-        
-        res.status(200).json({ products: result.rows });
+        res.status(200).json({ products: result.rows }); // Send rows as products
     } catch (err) {
         console.error('Database error:', err);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 // Add an item to the trolley
 app.post('/api/trolley/add', async (req, res) => {
