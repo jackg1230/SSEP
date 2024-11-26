@@ -211,6 +211,40 @@ app.get('/api/products', async (req, res) => { // gets all products
     }
 });
 
+app.get('/api/userlogin', async (req, res) => {
+    const { email, password_hash } = req.query;
+
+    // Validate inputs
+    if (!email || !password_hash) {
+        return res.status(400).json({ error: 'Both "email" and "password_hash" are required.' });
+    }
+
+    try {
+        // Query to find the user by email and password_hash
+        const query = `
+            SELECT 
+                "house_id", 
+                "user_id", 
+                "public_trolley" 
+            FROM users 
+            WHERE email = $1 AND password_hash = $2;
+        `;
+        const values = [email, password_hash];
+        const result = await pool.query(query, values);
+
+        // Check if a user is found
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'No user found with the provided email and password_hash.' });
+        }
+
+        // Respond with the user's details
+        res.status(200).json(result.rows[0]);
+    } catch (err) {
+        console.error('Database query error:', err); // Log the error
+        res.status(500).json({ error: 'Internal server error' }); // Send an error response
+    }
+});
+
 app.get('/api/products/search', async (req, res) => {
     const { field, value } = req.query;
 
