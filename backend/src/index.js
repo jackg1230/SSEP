@@ -3,10 +3,10 @@ const { Pool } = require('pg'); // PostgreSQL client
 const fs = require('fs');
 const https = require('https');
 const express = require('express');
-
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000; // Default HTTPS port is 443
-
+app.use(cors());
 // Load SSL/TLS certificate and private key
 const options = {
     key: fs.readFileSync('./server.key'), // Replace with the path to your private key
