@@ -226,16 +226,16 @@ app.post('/api/trolley/add', async (req, res) => {
 });
 
 app.get('/api/products', async (req, res) => { // gets products provided with a category
-    const { Category } = req.query;
+    const { category } = req.query;
     try {
         
-        if (!Category) {
+        if (!category) {
             return res.status(400).json({ error: 'Category is required' });
         }
         const query = `
             SELECT * FROM products WHERE "Category" = $1;
         `;
-        const values = [Category];
+        const values = [category];
         const result = await pool.query(query, values);
         
         res.status(200).json(result.rows);
