@@ -7,6 +7,7 @@ function Homepage() {
   const [products, setProducts] = useState([]);
   const [basket, setBasket] = useState({}); // Track quantities for products added to the basket
   const [editingBasket, setEditingBasket] = useState({}); // Tracks whether the user is editing a basket for a product
+  const [expandedRow, setExpandedRow] = useState(null); // Declare expandedRow state to track which row is expanded
 
   // Fetch products from API
   useEffect(() => {
@@ -35,6 +36,11 @@ function Homepage() {
 
     fetchProducts();
   }, []);
+
+  // Toggle expanded row
+  const toggleRow = (productId) => {
+    setExpandedRow((prev) => (prev === productId ? null : productId)); // Toggle logic for expanding/collapsing rows
+  };
 
   // Handle starting the edit mode for a product
   const handleStartEdit = (productId) => {
@@ -114,61 +120,59 @@ function Homepage() {
         <table className="products-table">
           <thead>
             <tr>
-              <th colSpan="8" className="table-header">Current Offers</th>
+              <th colSpan="5" className="table-header">Current Offers</th>
             </tr>
             <tr>
               <th>Image</th>
               <th>Product Name</th>
-              <th>Description</th>
-              <th>Price (GBP)</th>
               <th>Promotion</th>
-              <th>Shop</th>
-              <th>Category</th>
               <th>Actions</th>
+              <th>View Details</th> {/* Updated column header */}
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product.id}>
-                <td>
-                  <img
-                    src={product.itemURL}
-                    alt={product.name}
-                    style={{ width: "50px", height: "50px", objectFit: "cover" }}
-                  />
-                </td>
-                <td>{product.name}</td>
-                <td>{product.description}</td>
-                <td>{product.price}</td>
-                <td>{product.promotion}</td>
-                <td>{product.shop}</td>
-                <td>{product.category}</td>
-                <td>
-                  {!editingBasket[product.id] ? (
-                    // Show "Add to Basket" button if not editing
-                    <button onClick={() => handleStartEdit(product.id)}>Add to Basket</button>
-                  ) : (
-                    // Show +, -, and Confirm buttons if editing
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <button onClick={() => handleDecrement(product.id)}>-</button>
-                      <span>{basket[product.id]}</span>
-                      <button onClick={() => handleIncrement(product.id)}>+</button>
-                      <button
-                        onClick={() => handleConfirm(product.id)}
-                        style={{
-                          backgroundColor: "green",
-                          color: "white",
-                          border: "none",
-                          padding: "5px 10px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        Confirm
-                      </button>
-                    </div>
-                  )}
-                </td>
-              </tr>
+              <React.Fragment key={product.id}>
+                {/* Main Row */}
+                <tr onClick={() => toggleRow(product.id)} className="product-row">
+                  <td>
+                    <img
+                      src={product.itemURL}
+                      alt={product.name}
+                      style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                    />
+                  </td>
+                  <td>{product.name}</td>
+                  <td>{product.promotion}</td>
+                  <td>
+                    <button onClick={(e) => { e.stopPropagation(); handleStartEdit(product.id); }}>
+                      Add to Basket
+                    </button>
+                  </td>
+                  <td>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); toggleRow(product.id); }} 
+                      className="view-details-btn"
+                    >
+                      v
+                    </button>
+                  </td>
+                </tr>
+
+                {/* Expanded Row */}
+                {expandedRow === product.id && (
+                  <tr className="expanded-row">
+                    <td colSpan="5">
+                      <div className="expanded-details">
+                        <p><strong>Description:</strong> {product.description}</p>
+                        <p><strong>Price:</strong> {product.price}</p>
+                        <p><strong>Shop:</strong> {product.shop}</p>
+                        <p><strong>Category:</strong> {product.category}</p>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>

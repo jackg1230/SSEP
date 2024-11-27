@@ -38,6 +38,7 @@ header h1 {
 }
 
 button {
+  user-select: none;
   background-color: #4CAF50;
   color: white;
   padding: 10px;
@@ -56,4 +57,36 @@ button:hover {
   font-size: 1.5em;
   text-align: center;
   padding: 20px;
+}
+
+.view-details-btn {
+  background-color: #007bff; /* Blue background */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none; /* Prevent text selection */
+  display: inline-block; /* Make button inline-block so it can be centered */
+}
+
+.table-container td {
+  text-align: center; /* Horizontally center content in the table cell */
+}
+
+
+
+.view-details-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.view-details-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.5); /* Focus outline */
+}
+
+.view-details-btn:active {
+  background-color: #003c8f; /* Even darker blue on click */
 }
