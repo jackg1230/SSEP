@@ -1,3 +1,0 @@
-user_id,email,password_hash,house_id,payment_info,public_trolley
-1,rowan@example.com,hashedpassword1,101,card ending 1234,true
-3,test@example.com,hashedpass,1,card ending 1234,true

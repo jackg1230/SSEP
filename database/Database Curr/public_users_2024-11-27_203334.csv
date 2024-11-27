@@ -1,0 +1,5 @@
+user_id,email,password_hash,house_id,payment_info,public_trolley
+4,uniqueuser@example.com,hashedpassword123,1,card ending 5678,true
+5,newuser@example.com,hashedpassword123,1,card ending 5678,true
+6,newuser173@example.com,hashedpassword123,102,card ending 5678,true
+7,t@t.com,123,1,card ending 5678,false
