@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Homepage.css";
 import { useUser } from "../../context/UserContext";
+import Categories from './Categories';
 
 function Homepage() {
   const { user } = useUser(); // Access user data from context
@@ -177,6 +178,9 @@ function Homepage() {
           </tbody>
         </table>
       </div>
+
+      <Categories />
+
     </div>
   );
 }

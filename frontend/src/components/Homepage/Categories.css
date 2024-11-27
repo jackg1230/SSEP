@@ -1,0 +1,19 @@
+/* Styles specific to the Categories component */
+#categories {
+  padding: 16px;
+  text-align: center;
+  
+}
+
+.categories-header {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  color: #444;
+}
+
+.categories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}

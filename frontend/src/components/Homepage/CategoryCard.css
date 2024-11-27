@@ -1,0 +1,34 @@
+/* Styles specific to the CategoryCard component */
+.category-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 8px;
+  text-align: center;
+  width: 250px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.category-card-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.category-card-title {
+  font-size: 1.5rem;
+  margin: 12px 0;
+  color: #333;
+}
+
+.category-card-description {
+  color: #555;
+  font-size: 1rem;
+}
