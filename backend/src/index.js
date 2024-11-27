@@ -225,6 +225,27 @@ app.post('/api/trolley/add', async (req, res) => {
     }
 });
 
+app.get('/api/products', async (req, res) => { // gets products provided with a category
+    const { Category } = req.query;
+    try {
+        
+        if (!Category) {
+            return res.status(400).json({ error: 'Category is required' });
+        }
+        const query = `
+            SELECT * FROM products WHERE "Category" = $1;
+        `;
+        const values = [Category];
+        const result = await pool.query(query, values);
+        
+        res.status(200).json(result.rows);
+    } catch (err) {
+        
+        console.error('Database query error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // Remove an item from the trolley
 app.delete('/api/trolley/remove', async (req, res) => {
     const { user_id, product_id } = req.body;
