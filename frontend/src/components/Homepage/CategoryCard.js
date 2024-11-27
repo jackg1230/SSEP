@@ -1,5 +1,5 @@
 import React from 'react';
-import './CategoryCard.css'; // Import CSS specific to this component
+//import './CategoryCard.css'; // Import CSS specific to this component
 
 const CategoryCard = ({ name, description, image }) => {
     return (

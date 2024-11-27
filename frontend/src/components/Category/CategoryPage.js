@@ -3,33 +3,56 @@ import { useParams } from 'react-router-dom';
 import './CategoryPage.css';
 
 const CategoryPage = () => {
-    const { categoryName } = useParams(); // Get the category name from the URL
+    const { categoryName } = useParams(); // Extract category name from the URL
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchProducts = async () => {
-            // Replace this with an API call to fetch products by category
-            const data = [
-                { id: 1, name: 'Milk', price: '£1.50', category: 'Dairy' },
-                { id: 2, name: 'Cheese', price: '£2.50', category: 'Dairy' },
-                { id: 3, name: 'Yogurt', price: '£1.00', category: 'Dairy' },
-            ];
-            const filteredProducts = data.filter((product) => product.category === categoryName);
-            setProducts(filteredProducts);
+            setLoading(true);
+            try {
+                // Fetch products by category
+                const response = await fetch(`http://94.174.1.192:3000/api/products?category=${encodeURIComponent(categoryName)}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch products: ${response.statusText}`);
+                }
+                const data = await response.json();
+                setProducts(data.products || []); // Assuming the API response includes a "products" array
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
         };
+
         fetchProducts();
-    }, [categoryName]);
+    }, [categoryName]); // Refetch when categoryName changes
+
+    if (loading) {
+        return <p className="loading">Loading products...</p>;
+    }
+
+    if (error) {
+        return <p className="error">Error: {error}</p>;
+    }
 
     return (
         <div className="category-page">
-            <h1 className="category-header">{categoryName}</h1>
+            <h1 className="category-header">Products in {categoryName}</h1>
             <div className="product-grid">
-                {products.map((product) => (
-                    <div key={product.id} className="product-card">
-                        <h2>{product.name}</h2>
-                        <p>Price: {product.price}</p>
-                    </div>
-                ))}
+                {products.length > 0 ? (
+                    products.map((product) => (
+                        <div key={product.id} className="product-card">
+                            <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} className="product-image" />
+                            <h2 className="product-name">{product.name}</h2>
+                            <p className="product-price">Price: {product.price}</p>
+                            <p className="product-description">{product.description}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p className="no-products">No products found in this category.</p>
+                )}
             </div>
         </div>
     );
