@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./Homepage.css";
 import { useUser } from "../../context/UserContext";
-import Categories from './Categories';
+import Categories from "./Categories";
 
 function Homepage() {
   const { user } = useUser(); // Access user data from context
   const [products, setProducts] = useState([]);
   const [basket, setBasket] = useState({}); // Track quantities for products added to the basket
   const [editingBasket, setEditingBasket] = useState({}); // Tracks whether the user is editing a basket for a product
-  const [expandedRow, setExpandedRow] = useState(null); // Declare expandedRow state to track which row is expanded
+  const [expandedRow, setExpandedRow] = useState(null); // Tracks which row is expanded
 
   // Fetch products from API
   useEffect(() => {
@@ -40,14 +40,14 @@ function Homepage() {
 
   // Toggle expanded row
   const toggleRow = (productId) => {
-    setExpandedRow((prev) => (prev === productId ? null : productId)); // Toggle logic for expanding/collapsing rows
+    setExpandedRow((prev) => (prev === productId ? null : productId));
   };
 
   // Handle starting the edit mode for a product
   const handleStartEdit = (productId) => {
     setEditingBasket((prev) => ({
       ...prev,
-      [productId]: true, // Set this product to editing mode
+      [productId]: true,
     }));
     setBasket((prevBasket) => ({
       ...prevBasket,
@@ -59,7 +59,7 @@ function Homepage() {
   const handleIncrement = (productId) => {
     setBasket((prevBasket) => ({
       ...prevBasket,
-      [productId]: (prevBasket[productId] || 0) + 1, // Increment quantity
+      [productId]: (prevBasket[productId] || 0) + 1,
     }));
   };
 
@@ -68,10 +68,10 @@ function Homepage() {
     setBasket((prevBasket) => {
       const newBasket = { ...prevBasket };
       if (newBasket[productId] > 1) {
-        newBasket[productId] -= 1; // Decrement quantity
+        newBasket[productId] -= 1;
       } else {
-        delete newBasket[productId]; // Remove item if quantity is 0
-        setEditingBasket((prev) => ({ ...prev, [productId]: false })); // Exit edit mode
+        delete newBasket[productId];
+        setEditingBasket((prev) => ({ ...prev, [productId]: false })); // Exit edit mode if quantity is 0
       }
       return newBasket;
     });
@@ -84,14 +84,13 @@ function Homepage() {
       return;
     }
 
-    const quantity = basket[productId]; // Get the quantity
+    const quantity = basket[productId];
     if (!quantity || quantity <= 0) {
       alert("Please select a quantity before confirming.");
       return;
     }
 
     try {
-      // Send POST request to the server
       const response = await fetch("http://94.174.1.192:3000/api/trolley/add", {
         method: "POST",
         headers: {
@@ -128,7 +127,7 @@ function Homepage() {
               <th>Product Name</th>
               <th>Promotion</th>
               <th>Actions</th>
-              <th>View Details</th> {/* Updated column header */}
+              <th>View Details</th>
             </tr>
           </thead>
           <tbody>
@@ -146,9 +145,30 @@ function Homepage() {
                   <td>{product.name}</td>
                   <td>{product.promotion}</td>
                   <td>
-                    <button onClick={(e) => { e.stopPropagation(); handleStartEdit(product.id); }}>
-                      Add to Basket
-                    </button>
+                    {editingBasket[product.id] ? (
+                      <div
+                        className="basket-controls"
+                        style={{
+                          display: "flex",
+                          gap: "8px", // Space between buttons
+                          alignItems: "center",
+                        }}
+                      >
+                        <button onClick={(e) => { e.stopPropagation(); handleDecrement(product.id); }}>-</button>
+                        <span>{basket[product.id]}</span>
+                        <button onClick={(e) => { e.stopPropagation(); handleIncrement(product.id); }}>+</button>
+                        <button
+                          className="confirm-btn"
+                          onClick={(e) => { e.stopPropagation(); handleConfirm(product.id); }}
+                        >
+                          Confirm
+                        </button>
+                      </div>
+                    ) : (
+                      <button onClick={(e) => { e.stopPropagation(); handleStartEdit(product.id); }}>
+                        Add to Basket
+                      </button>
+                    )}
                   </td>
                   <td>
                     <button 
@@ -180,7 +200,6 @@ function Homepage() {
       </div>
 
       <Categories />
-
     </div>
   );
 }
