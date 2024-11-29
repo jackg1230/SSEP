@@ -1,0 +1,94 @@
+
+.container {
+  width: 80%;
+  margin: 20px auto; 
+}
+
+
+.button-container {
+  display: flex; 
+  justify-content: flex-start; 
+  margin-bottom: 20px;
+}
+
+
+.switch-button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: 2px solid #3498db; 
+  border-radius: 5px; 
+  background-color: #ffffff; 
+  color: #3498db; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-right: 10px; 
+  white-space: nowrap; 
+}
+
+/* Button hover effect */
+.switch-button:hover {
+  background-color: #e0f7fc; 
+}
+
+
+.switch-button.active {
+  background-color: #3498db; 
+  color: white; 
+}
+
+
+.table-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+thead {
+  background-color: #3498db; 
+  color: white;
+}
+
+thead tr th {
+  padding: 10px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9; 
+}
+
+tbody tr td {
+  padding: 10px;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1; 
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .switch-button {
+    padding: 5px 8px;
+    font-size: 12px; 
+  }
+
+  table {
+    font-size: 14px;
+  }
+}
