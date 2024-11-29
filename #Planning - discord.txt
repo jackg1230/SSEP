@@ -1,0 +1,53 @@
+#Planning
+
+
+#Roles
+Backend (Server setup, API and Database) - Jack Rowan
+Frontend (React, UI) - Lucas Ethan
+
+Plan for backend 
+establish server and open network ports to allow communication with the user - This will require us to access the router setting on the IP in which the server is to be hosted and use port forwarding to open the appropriate port.
+
+Develop database and create relevant relations - Due to our existing knowledge from previous modules we will be used PostgreSQL to host our database, with its well supported network allowing us to access databse from our javascript. We will require multiple tables, (Favourite, House, Order_Product, Order, Trolley, Product and User). We will be using Bee Keeper studio to provide us with a GUI for the database, creating ease of access when creating relations in the database.
+
+Create program to update database from relevant shops(JSON files) - Due to its versatility from numerous libraires we will be using python to read JSON files and upload the data to our database. These JSON files will be names aldi.json etc and simulate the result from using an api to fetch data about an actual shop.
+ 
+Develop API for fetching data from the database and displaying it to webpage - The Api should be written in javascript and run on a node server, allowing the client to send database requests without opening up the entire database to the internet. this will improve security and ensure that user data remains safely stored. We will test the functionality using Curl requests from the terminal to ensure that we are receiving the correct data.
+
+Aid with setup of frontend and extend api wherever necessary.
+
+Plan for Frontend
+Setup react environment and ensure we have a sound file structure for the project - This will involve creating a proper file structure for the react app with components in the source folder aiding readability. This will be hosted on port 3001 of the server and be the main page that users will land on.
+
+Establish a home page to display products on sale - We will again be suing javascript to develop all our pages as primarily we will be developing a web app. we will be creating a table structure which can later be populated with various products that will be on the site. We will be sticking to a blue and white colour scheme which will be the colours of SSH.
+
+create a header to allow the user to switch between pages - The header will be present at the top of all pages bar the login page. It will display the user Id and be used to navigate between the various pages on the site. Due to the versatility of react we can create this once and then import it into all of the pages it is required.
+
+Create a login page which links to backend api - The login System will use a GET request to fetch the userId, HouseID and public trolley attribute given an email and password. If data is returned the page will know that a correct login has occurred and users will be sent to the home page. otherwise a pop up will tell the user there details are incorrect.
+
+create a search bar which connects to api - The search bar will give a live updating window into the products table, allowing users to enter the name of a product and viewing the various option across multiple shops. This will allow the user to compare the price between shops and read a brief description of the product.
+
+make a group order page to display all the orders in the house - The Group order page will display the orders of all the other individuals in the house (given public trolley is true), allowing users to know what not to buy if it is already been purchases by another house member. This transparency will aid housemates from duplicate purchases.
+
+make UI changes and refine the page
+
+Overall order:
+1. Establish the server for node and react
+2. Establish homepage
+3. Develop the database
+4. Create the header and add templates for other pages
+5. Create program to update database
+6. Add APi to fetch data 
+7. Create login page
+8. Create search Bar
+9. Create order page
+
+Some jobs can be completed simultaneously however we do have some dependencies such as:
+1. The API must be completed before the login and search bar can be added
+2. The Server must be established before the database can be created and react/node pages launched 
+
+Due to the importance in communication between the front and back end we will be having frequent meetings on discord aswell as constantly updating eachother on our progress.
+At times where one team is waiting for another to complete a task to move on, we will all focus on that goal to ensure the work is completed quickly and efficiently. 
+
+Updates will be sent in the discord and added in Due time.
+
