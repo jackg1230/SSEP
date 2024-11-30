@@ -107,7 +107,7 @@ function BasketTable({ items }) {
             <tr key={index}>
               <td>{item.product_name}</td>
               <td>{item.quantity}</td>
-              <td>£{item.Price}</td>
+              <td>{item.Price}</td>
             </tr>
           ))
         ) : (
