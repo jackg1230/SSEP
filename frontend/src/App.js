@@ -23,7 +23,7 @@ function AppContent() {
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/orders" element={<GroupOrderPage />} />
           <Route path="/search" element={<SearchPage />} />
-
+          <Route path="/category/:categoryName" element={<CategoryPage />} />
         </Routes>
       </>
     );

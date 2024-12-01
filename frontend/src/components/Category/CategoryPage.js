@@ -18,7 +18,8 @@ const CategoryPage = () => {
                     throw new Error(`Failed to fetch products: ${response.statusText}`);
                 }
                 const data = await response.json();
-                setProducts(data.products || []); // Assuming the API response includes a "products" array
+                console.log('Fetched data:', data); // Log the fetched data
+                setProducts(data || []); // Set the products from the response
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -43,11 +44,19 @@ const CategoryPage = () => {
             <div className="product-grid">
                 {products.length > 0 ? (
                     products.map((product) => (
-                        <div key={product.id} className="product-card">
-                            <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} className="product-image" />
-                            <h2 className="product-name">{product.name}</h2>
-                            <p className="product-price">Price: {product.price}</p>
-                            <p className="product-description">{product.description}</p>
+                        <div key={product.ID} className="product-card">
+                            <img
+                                src={product.ItemURL || 'https://via.placeholder.com/150'}
+                                alt={product.Name}
+                                className="product-image"
+                            />
+                            <h2 className="product-name">{product.Name}</h2>
+                            <p className="product-description">{product.Description}</p>
+                            <p className="product-price">Price: {product.Price}</p>
+                            <p className="product-promotion">
+                                {product.Promotion ? `Promotion: ${product.Promotion}` : ''}
+                            </p>
+                            <p className="product-shop">Shop: {product.Shop}</p>
                         </div>
                     ))
                 ) : (
