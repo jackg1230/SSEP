@@ -90,3 +90,9 @@ button:hover {
 .view-details-btn:active {
   background-color: #003c8f; /* Even darker blue on click */
 }
+
+.categories-grid {
+  padding: 6.5%;
+
+
+}
