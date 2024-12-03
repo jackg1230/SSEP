@@ -20,10 +20,24 @@ except Exception as e:
     print(f"Error connecting to the database: {e}")
     exit()
 
+# Ensure the table exists with the necessary columns
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS items (
+    ID SERIAL PRIMARY KEY,
+    Name TEXT NOT NULL,
+    Shop TEXT NOT NULL,
+    Price TEXT NOT NULL,
+    ItemURL TEXT,
+    Description TEXT,
+    Promotion TEXT,
+    Category TEXT
+)
+''')
+conn.commit()
 
 # Function to process all JSON files in a folder
 def process_folder(folder_path):
-    all_items = set()  # To track all items processed from all files
+    all_items = set()  # Track items processed (Name, Shop)
 
     # Iterate over all JSON files in the folder
     for file_name in os.listdir(folder_path):
@@ -35,50 +49,49 @@ def process_folder(folder_path):
                 data = json.load(f)
 
                 for item in data:
-                    # Add the item (Name, Shop) combination to the all_items set
+                    # Add the item (Name, Shop) combination to the set
                     all_items.add((item['Name'], item['Shop']))
 
-                    # Check if the entry with the same Name and Shop exists
+                    # Insert or update the record in the database
                     cursor.execute('''
-                    SELECT "ID" FROM items WHERE "Name" = %s AND "Shop" = %s
-                    ''', (item['Name'], item['Shop']))
-                    existing_entry = cursor.fetchone()
-
-                    if existing_entry:
-                        # Update the record if it exists
-                        cursor.execute('''
-                        UPDATE items
-                        SET "Price" = %s
-                        WHERE "Name" = %s AND "Shop" = %s
-                        ''', (item['Price'], item['Name'], item['Shop']))
-                    else:
-                        # Insert a new record with auto-incremented ID
-                        cursor.execute('''
-                        INSERT INTO items ("Name", "Shop", "Price")
-                        VALUES (%s, %s, %s)
-                        ''', (item['Name'], item['Shop'], item['Price']))
+                    INSERT INTO items (Name, Description, Price, ItemURL,Shop, Promotion, Category)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (Name, Shop)
+                    DO UPDATE SET
+                        Price = EXCLUDED.Price,
+                        ItemURL = EXCLUDED.ItemURL,
+                        Description = EXCLUDED.Description,
+                        Promotion = EXCLUDED.Promotion,
+                        Category = EXCLUDED.Category
+                    ''', (
+                        item['Name'],
+                        item['Shop'],
+                        item['Price'],
+                        item.get('ItemURL', None),
+                        item.get('Description', None),
+                        item.get('Promotion', None),
+                        item.get('Category', None)
+                    ))
 
     conn.commit()
 
-    # Delete items not present in any of the files
-    cursor.execute('SELECT "Name", "Shop" FROM items')
-    db_items = cursor.fetchall()  # Fetch all items currently in the database
+    # Remove items from the database that are no longer in any JSON file
+    cursor.execute('SELECT Name, Shop FROM items')
+    db_items = cursor.fetchall()
 
     for db_item in db_items:
         if db_item not in all_items:
-            # Delete the item from the database
             cursor.execute('''
-            DELETE FROM items
-            WHERE "Name" = %s AND "Shop" = %s
+            DELETE FROM items WHERE Name = %s AND Shop = %s
             ''', db_item)
 
     conn.commit()
 
-folder_path = './shop_files'  
+# Process all JSON files in the specified folder
+folder_path = './shop_files'  # Replace with the path to your JSON files
 process_folder(folder_path)
 
-
-# Close the connection
+# Close the database connection
 cursor.close()
 conn.close()
-print("Database connection closed.")
+print("Database updated and connection closed.")
