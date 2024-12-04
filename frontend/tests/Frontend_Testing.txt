@@ -30,3 +30,8 @@ Implemented Individual basket
 		Can a user decrease the number of a certain product within the basket
 		Can a user delete a certain product within the basket, by setting its quantity to 0
 	Products can be deleted without issue. Current implementation allows users to increment or decrement the value of items in the basket however, due to backend implementation each time the number is edited a new row is created in the table of the same product.
+Implemented Group basket:
+	Tests to be run:
+		A user should not be able to increase/decrease/delete the number of a certain product which another user has added
+		A user's trolley who has their public trolley attribute in the database set to False should not be displayed in other user's group trolley
+		
