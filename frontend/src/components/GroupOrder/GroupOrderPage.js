@@ -29,7 +29,7 @@ function GroupOrderPage() {
         const endpoint =
           activeTab === "basket"
             ? `http://94.174.1.192:3000/api/trolley?user_id=${user.user_id}`
-            : `http://94.174.1.192:3000/api/trolley?user_id=${user.user_id}`;
+            : `http://94.174.1.192:3000/api/group-trolley?user_id=${user.user_id}`;
         const response = await fetch(endpoint);
         const data = await response.json();
 

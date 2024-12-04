@@ -67,6 +67,55 @@ app.get('/api/trolley', async (req, res) => {
     }
 });
 
+app.get('/api/group-trolley', async (req, res) => {
+    const { user_id } = req.query;
+    try {
+        const query = `
+            WITH UserHouse AS (
+                SELECT "house_id"
+                FROM "users"
+                WHERE "user_id" = $1
+            ),
+            UserTrolley AS (
+                SELECT 
+                    t."user_id", 
+                    t."product_id", 
+                    t."quantity"
+                FROM "trolley" t
+                WHERE t."user_id" = $1
+            ),
+            HouseTrolley AS (
+                SELECT 
+                    t."user_id", 
+                    t."product_id", 
+                    t."quantity"
+                FROM "trolley" t
+                INNER JOIN "users" u ON t."user_id" = u."user_id"
+                WHERE u."house_id" = (SELECT "house_id" FROM UserHouse)
+                AND u."public_trolley" = TRUE
+            )
+            SELECT 
+                p."ID",
+                p."Name" AS product_name,
+                p."Price",
+                trolley."quantity",
+                trolley."user_id"
+            FROM (
+                SELECT * FROM UserTrolley
+                UNION ALL
+                SELECT * FROM HouseTrolley
+            ) AS trolley
+            INNER JOIN "products" p ON trolley."product_id" = p."ID";
+        `;
+        const values = [user_id];
+        const result = await pool.query(query, values);
+        res.status(200).json({ items: result.rows });
+    } catch (err) {
+        console.error( err);
+    }
+});
+
+
 // Add a new user
 app.post('/users', async (req, res) => {
     const { email, password_hash, address, postcode, payment_info, public_trolley } = req.body;
