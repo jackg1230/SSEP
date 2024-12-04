@@ -1,0 +1,32 @@
+Frontend Testing Log:
+Implemented all webpages at a basic level & a header to navigate between them.
+	Tests to be run:
+		Navigate to homepage
+		Navigate to search page
+		Navigate to order/group order page
+		Navigate to settings page
+	All tests passed.
+Implemented Homepage Table.
+	Tests to be run:
+		See if all products on offer can be viewed
+		Can products be added to a user's basket
+	All products on offer can be viewed, but products cannot be added to the users basket as no login system implemented yet so there is no userID to assign the product to.
+Implemented login system.
+	Tests to be run:
+		Can a user log in
+		Can a new user register an account & join a house
+	User can login and access the homepage correctly
+	No way to create a new account or join a house yet
+Users can now add items to their basket from the homepage
+
+Implemented search page table
+	Tests to be run:
+		Can a user access different items in the database e.g. apples, tomatoes, potatoes
+		Can a user add items to their basket
+	Multiple items can be accessed and also added to a users basket.
+Implemented Individual basket
+	Tests to be run:
+		Can a user increase the number of a certain product within the basket
+		Can a user decrease the number of a certain product within the basket
+		Can a user delete a certain product within the basket, by setting its quantity to 0
+	Products can be deleted without issue. Current implementation allows users to increment or decrement the value of items in the basket however, due to backend implementation each time the number is edited a new row is created in the table of the same product.

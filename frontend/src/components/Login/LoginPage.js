@@ -1,17 +1,15 @@
 // LoginPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext'; //imports stored user data from UserContext file
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const { setUser } = useUser(); // Access setUser to update context
+    const [password, setPassword] = useState(''); 
+    const { setUser } = useUser(); 
     const navigate = useNavigate();
-
     const handleLogin = async (e) => {
         e.preventDefault();
-
         try {
             const response = await fetch(
                 `http://94.174.1.192:3000/api/userlogin?email=${encodeURIComponent(
@@ -19,7 +17,6 @@ const LoginPage = () => {
                 )}&password_hash=${encodeURIComponent(password)}`,
                 { method: 'GET' }
             );
-
             if (response.ok) {
                 const data = await response.json();
                 setUser({
@@ -27,7 +24,7 @@ const LoginPage = () => {
                     house_id: data.house_id,
                     public_trolley: data.public_trolley,
                 });
-                navigate('/home'); // Redirect after successful login
+                navigate('/home'); 
             } else {
                 alert('Invalid login credentials.');
             }
