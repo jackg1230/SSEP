@@ -1,8 +1,6 @@
 import psycopg2
 import json
 import os
-
-# PostgreSQL connection details
 db_config = {
     "dbname": "ssh_grocery",
     "user": "ssep1",
@@ -10,75 +8,52 @@ db_config = {
     "host": "localhost",
     "port": 5432
 }
-
-# Connect to the PostgreSQL database
 try:
     conn = psycopg2.connect(**db_config)
     cursor = conn.cursor()
-    print("Connected to the database successfully.")
 except Exception as e:
-    print(f"Error connecting to the database: {e}")
-    exit()
+    print(e)
 
-
-# Function to process all JSON files in a folder
 def process_folder(folder_path):
-    all_items = set()  # To track all items processed from all files
+    all_items = set() 
 
-    # Iterate over all JSON files in the folder
     for file_name in os.listdir(folder_path):
-        if file_name.endswith('.json'):
-            file_path = os.path.join(folder_path, file_name)
-
-            # Read and process each JSON file
-            with open(file_path, 'r') as f:
-                data = json.load(f)
-
-                for item in data:
-                    # Add the item (Name, Shop) combination to the all_items set
-                    all_items.add((item['Name'], item['Shop']))
-
-                    # Check if the entry with the same Name and Shop exists
-                    cursor.execute('''
-                    SELECT "ID" FROM items WHERE "Name" = %s AND "Shop" = %s
-                    ''', (item['Name'], item['Shop']))
-                    existing_entry = cursor.fetchone()
-
-                    if existing_entry:
-                        # Update the record if it exists
-                        cursor.execute('''
-                        UPDATE items
-                        SET "Price" = %s
-                        WHERE "Name" = %s AND "Shop" = %s
-                        ''', (item['Price'], item['Name'], item['Shop']))
-                    else:
-                        # Insert a new record with auto-incremented ID
-                        cursor.execute('''
-                        INSERT INTO items ("Name", "Shop", "Price")
-                        VALUES (%s, %s, %s)
-                        ''', (item['Name'], item['Shop'], item['Price']))
-
+        file_path = os.path.join(folder_path, file_name)
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+            for item in data:
+                all_items.add((item['Name'], item['Shop']))
+                cursor.execute('''
+                    INSERT INTO items (Name, Description, Price, ItemURL,Shop, Promotion, Category)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (Name, Shop)
+                    DO UPDATE SET
+                        Price = EXCLUDED.Price,
+                        ItemURL = EXCLUDED.ItemURL,
+                        Description = EXCLUDED.Description,
+                        Promotion = EXCLUDED.Promotion,
+                        Category = EXCLUDED.Category
+                    ''', (
+                    item['Name'],
+                    item['Shop'],
+                    item['Price'],
+                    item.get('ItemURL', None),
+                    item.get('Description', None),
+                    item.get('Promotion', None),
+                    item.get('Category', None)
+                ))
     conn.commit()
-
-    # Delete items not present in any of the files
-    cursor.execute('SELECT "Name", "Shop" FROM items')
-    db_items = cursor.fetchall()  # Fetch all items currently in the database
-
+    cursor.execute('SELECT Name, Shop FROM items')
+    db_items = cursor.fetchall()
     for db_item in db_items:
         if db_item not in all_items:
-            # Delete the item from the database
             cursor.execute('''
-            DELETE FROM items
-            WHERE "Name" = %s AND "Shop" = %s
+            DELETE FROM items WHERE Name = %s AND Shop = %s
             ''', db_item)
 
     conn.commit()
 
-folder_path = './shop_files'  
-process_folder(folder_path)
+process_folder('./shop_files'  )
 
-
-# Close the connection
 cursor.close()
 conn.close()
-print("Database connection closed.")
