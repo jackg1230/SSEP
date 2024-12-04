@@ -1,0 +1,85 @@
+#LoginPage {
+  padding-top: 100px;
+  background-color: #80d1e5;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  p {
+    margin: 10px;
+  }
+}
+
+#Login-Inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  padding-bottom: 20px;
+  width: 100%; 
+}
+
+
+#LoginPage-container {
+  align-content: center;
+  justify-content: center;
+  height: 400px;
+  
+  width: 300px;
+  background-color: #fff7ee;
+  background-color: #fff7ee;
+  border: 1.5px solid #1f466b;
+  color: #2d2e32;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 10px 10px 0px #1f466b;
+}
+
+.login-button {
+  margin: 10px;
+  background-color: #1f466b;
+  border: none;
+  color: #1f466b;
+  border-radius: 7px;
+  color: #fff7ee;
+  width: 70px;
+  height: 37px;
+  font-weight: 900;
+}
+
+.login-button:hover {
+  border: 1.5px solid #2d2e32;
+  background-color: #80d1e5;
+  color: #14293d;
+}
+
+h1 {
+  padding-bottom: 30px;
+  color: #2d2e32;
+}
+
+a {
+  padding-top: 10px;
+}
+
+
+input {
+  border: 1px solid #2d2e32;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 15px 0;
+  width: 100px; 
+}
+
+#Username-Input {
+  display: flex;
+  flex-direction: column;
+}
+
+#Password-Input {
+  display: flex;
+  flex-direction: column;
+}
+
