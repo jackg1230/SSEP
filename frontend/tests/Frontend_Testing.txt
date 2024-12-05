@@ -34,4 +34,10 @@ Implemented Group basket:
 	Tests to be run:
 		A user should not be able to increase/decrease/delete the number of a certain product which another user has added
 		A user's trolley who has their public trolley attribute in the database set to False should not be displayed in other user's group trolley
-		
+
+
+Error Found: When switching between Individual basket and Group basket Items currently in the basket were being duplicated.
+Implemented a fix for this:
+	Tests to be run:
+		Do duplicate items appear when switching between baskets?
+	Test passed
