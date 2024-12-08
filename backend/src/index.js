@@ -247,6 +247,94 @@ app.delete('/api/trolley/remove', async (req, res) => {
         console.error(err);
     }
 });
+
+const getPublicTrolleyStatus = async (user_id) => {
+    try {
+        const query = `
+            SELECT public_trolley 
+            FROM users 
+            WHERE user_id = $1;
+        `;
+        const values = [user_id];
+        const result = await pool.query(query, values);
+
+        if (result.rows.length === 0) {
+            throw new Error('User not found');
+        }
+
+        return result.rows[0].public_trolley; // Return the current public_trolley status
+    } catch (err) {
+        console.error('Error fetching public trolley status:', err);
+        throw err; // Re-throw the error to be handled by the caller
+    }
+};
+
+app.get('/api/trolley/public-trolley-status', async (req, res) => {
+    const { user_id } = req.user;
+
+    if (!user_id) {
+        return res.status(400).json({ error: 'User ID is required.' });
+    }
+
+    try {
+        // Use getPublicTrolleyStatus to fetch the current status
+        const publicTrolleyStatus = await getPublicTrolleyStatus(user_id);
+
+        // Send the status to the client
+        res.status(200).json({
+            user_id,
+            public_trolley: publicTrolleyStatus,
+        });
+    } catch (err) {
+        console.error('Error fetching public trolley status:', err);
+        if (err.message === 'User not found') {
+            res.status(404).json({ error: 'User not found.' });
+        } else {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+});
+
+
+app.post('/api/trolley/toggle-public-trolley', async (req, res) => {
+    const { user_id } = req.user; // Extract user_id from the JWT token
+
+    if (!user_id) {
+        return res.status(400).json({ error: 'User ID is required.' });
+    }
+
+    try {
+        // Get the current public_trolley status
+        const currentStatus = await getPublicTrolleyStatus(user_id);
+
+        // Toggle the value
+        const newStatus = !currentStatus;
+
+        // Update the public_trolley attribute
+        const updateQuery = `
+            UPDATE users 
+            SET public_trolley = $1 
+            WHERE user_id = $2;
+        `;
+        const updateValues = [newStatus, user_id];
+        await pool.query(updateQuery, updateValues);
+
+        res.status(200).json({
+            message: 'Public trolley status updated successfully.',
+            user_id,
+            public_trolley: newStatus,
+        });
+    } catch (err) {
+        console.error('Error toggling public trolley:', err);
+        if (err.message === 'User not found') {
+            res.status(404).json({ error: 'User not found.' });
+        } else {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+});
+
+
 // Start HTTP server
 app.listen(PORT, () => {
     console.log(`HTTP server running on http://localhost:${PORT}`);
