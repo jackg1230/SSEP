@@ -200,22 +200,55 @@ app.get('/api/search', async (req, res) => {
 // Add an item to the trolley
 app.post('/api/trolley/add', async (req, res) => {
     const { user_id, product_id, quantity } = req.body;
+
+    if (!user_id || !product_id || !quantity || quantity <= 0) {
+        return res.status(400).json({ error: 'Invalid input: user_id, product_id, and quantity are required and quantity must be greater than 0.' });
+    }
+
     try {
-        const lastIdQuery = `SELECT MAX(trolley_id) AS last_id FROM trolley;`;
-        const lastIdResult = await pool.query(lastIdQuery);
-        const lastId = lastIdResult.rows[0].last_id || 0;
-        const newTrolleyId = lastId + 1;
-        const insertQuery = `
-            INSERT INTO trolley (trolley_id, user_id, product_id, quantity)
-            VALUES ($1, $2, $3, $4);
+        // Check if the product already exists in the user's trolley
+        const checkQuery = `
+            SELECT quantity 
+            FROM trolley 
+            WHERE user_id = $1 AND product_id = $2;
         `;
-        const values = [newTrolleyId, user_id, product_id, quantity];
-        await pool.query(insertQuery, values);
-        res.status(200).json({ message: 'Item added to trolley.', trolley_id: newTrolleyId });
+        const checkValues = [user_id, product_id];
+        const checkResult = await pool.query(checkQuery, checkValues);
+
+        if (checkResult.rows.length > 0) {
+            // Product exists in the trolley, update the quantity
+            const newQuantity = checkResult.rows[0].quantity + quantity;
+            const updateQuery = `
+                UPDATE trolley 
+                SET quantity = $1 
+                WHERE user_id = $2 AND product_id = $3;
+            `;
+            const updateValues = [newQuantity, user_id, product_id];
+            await pool.query(updateQuery, updateValues);
+
+            return res.status(200).json({ message: 'Trolley updated successfully.', product_id, new_quantity: newQuantity });
+        } else {
+            // Product does not exist in the trolley, insert a new row
+            const lastIdQuery = `SELECT MAX(trolley_id) AS last_id FROM trolley;`;
+            const lastIdResult = await pool.query(lastIdQuery);
+            const lastId = lastIdResult.rows[0].last_id || 0;
+            const newTrolleyId = lastId + 1;
+
+            const insertQuery = `
+                INSERT INTO trolley (trolley_id, user_id, product_id, quantity)
+                VALUES ($1, $2, $3, $4);
+            `;
+            const insertValues = [newTrolleyId, user_id, product_id, quantity];
+            await pool.query(insertQuery, insertValues);
+
+            return res.status(200).json({ message: 'Item added to trolley.', trolley_id: newTrolleyId });
+        }
     } catch (err) {
-        console.error(err);
+        console.error('Error adding to trolley:', err);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 app.get('/api/products', async (req, res) => { // gets products provided with a category
     const { category } = req.query;
@@ -269,8 +302,9 @@ const getPublicTrolleyStatus = async (user_id) => {
     }
 };
 
+
 app.get('/api/trolley/public-trolley-status', async (req, res) => {
-    const { user_id } = req.user;
+    const { user_id } = req.query; // Extract user_id from query parameters
 
     if (!user_id) {
         return res.status(400).json({ error: 'User ID is required.' });
@@ -296,8 +330,9 @@ app.get('/api/trolley/public-trolley-status', async (req, res) => {
 });
 
 
+
 app.post('/api/trolley/toggle-public-trolley', async (req, res) => {
-    const { user_id } = req.user; // Extract user_id from the JWT token
+    const { user_id } = req.body; // Extract user_id from the request body
 
     if (!user_id) {
         return res.status(400).json({ error: 'User ID is required.' });
