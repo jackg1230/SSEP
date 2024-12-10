@@ -1,4 +1,3 @@
-// Import necessary dependencies
 import React, { useState, useEffect } from "react";
 import "./GroupOrderPage.css";
 import { useUser } from "../../context/UserContext";
@@ -6,14 +5,14 @@ import { useUser } from "../../context/UserContext";
 function GroupOrderPage() {
   const { user, setUser } = useUser(); // Access user data from context
   const [groupProducts, setGroupProducts] = useState([]);
-  const [groupBasket, setGroupBasket] = useState({}); // Track quantities for group basket
-  const [editingGroupBasket, setEditingGroupBasket] = useState({}); // Tracks editing mode for group basket items
-  const [loading, setLoading] = useState(false);  // Tracks loading state
-  const [error, setError] = useState(null); // Tracks error state
-  const [successMessage, setSuccessMessage] = useState(""); // Tracks success message
-  const [activeTab, setActiveTab] = useState("basket"); // Tracks the selected tab 
+  const [userBasketProducts, setUserBasketProducts] = useState([]);
+  const [groupBasket, setGroupBasket] = useState({});
+  const [editingGroupBasket, setEditingGroupBasket] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [activeTab, setActiveTab] = useState("basket");
 
-  // Use localStorage to persist the user session after a page refresh
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -21,12 +20,11 @@ function GroupOrderPage() {
     }
   }, [setUser]);
 
-  // Clear groupProducts when switching tabs
   useEffect(() => {
-    setGroupProducts([]); // Reset products to prevent duplicates
+    setGroupProducts([]);
+    setUserBasketProducts([]);
   }, [activeTab]);
 
-  // Fetch products based on the active tab
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -40,33 +38,33 @@ function GroupOrderPage() {
         const data = await response.json();
 
         if (!Array.isArray(data.items)) {
-          console.error("Unexpected data format:", data);
           throw new Error("Expected an array from API response.");
         }
 
-        // Map API response to table fields, deduplicating entries
-        const newProducts = data.items.map((product) => ({
-          id: product.ID,
-          name: product.product_name,
-          price: product.Price,
-          itemURL: product.ItemURL || "",
-          groupSize: product.quantity,
-        }));
+        const userBasket = [];
+        const groupItems = [];
+        const basketQuantities = {};
 
-        setGroupProducts((prevProducts) =>
-          [...prevProducts, ...newProducts].filter(
-            (product, index, self) =>
-              index === self.findIndex((p) => p.id === product.id)
-          )
-        );
-
-        const initialBasket = {};
         data.items.forEach((product) => {
-          initialBasket[product.ID] = product.quantity;
+          const productData = {
+            id: product.ID,
+            name: product.product_name,
+            price: product.Price,
+            itemURL: product.ItemURL || "",
+            quantity: product.quantity,
+          };
+          if (product.user_id === user.user_id) {
+            userBasket.push(productData);
+          } else {
+            groupItems.push(productData);
+          }
+          basketQuantities[product.ID] = product.quantity;
         });
-        setGroupBasket(initialBasket);
+
+        setUserBasketProducts(userBasket);
+        setGroupProducts(groupItems);
+        setGroupBasket(basketQuantities);
       } catch (err) {
-        console.error("Error fetching products:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -77,6 +75,36 @@ function GroupOrderPage() {
       fetchProducts();
     }
   }, [user, activeTab]);
+
+  const renderProductRow = (product) => (
+    <tr key={product.id} className="product-row">
+      <td>
+        <img
+          src={product.itemURL}
+          alt={product.name}
+          style={{ width: "50px", height: "50px", objectFit: "cover" }}
+        />
+      </td>
+      <td>{product.name}</td>
+      <td>{product.price}</td>
+      <td>{groupBasket[product.id] || 0}</td>
+      {activeTab === "basket" && (
+        <td>
+          {editingGroupBasket[product.id] ? (
+            <button onClick={() => handleConfirm(product.id)}>
+              Confirm Quantity
+            </button>
+          ) : (
+            <>
+              <button onClick={() => handleIncrement(product.id)}>+</button>
+              <button onClick={() => handleDecrement(product.id)}>-</button>
+              <button onClick={() => handleStartEdit(product.id)}>Edit</button>
+            </>
+          )}
+        </td>
+      )}
+    </tr>
+  );
 
   return (
     <div className="group-order-page">
@@ -94,16 +122,16 @@ function GroupOrderPage() {
           Group Basket
         </button>
       </div>
-  
+
       {successMessage && <p className="success-message">{successMessage}</p>}
       {error && <p className="error-message">{error}</p>}
-  
+
       <div className="table-container">
         {loading && <p>Loading products...</p>}
         <table className="group-products-table">
           <thead>
             <tr>
-              <th colSpan="5" className="table-header">
+              <th colSpan={activeTab === "basket" ? "5" : "4"} className="table-header">
                 {activeTab === "basket" ? "Individual Basket" : "Group Basket"}
               </th>
             </tr>
@@ -112,55 +140,34 @@ function GroupOrderPage() {
               <th>Product Name</th>
               <th>Price</th>
               <th>Quantity</th>
-              <th>Actions</th>
+              {activeTab === "basket" && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
-            {groupProducts.map((product) => {
-              const numericPrice = parseFloat(product.price.replace("£", "")) || 0; // Clean price
-              return (
-                <tr key={product.id} className="product-row">
-                  <td>
-                    <img
-                      src={product.itemURL}
-                      alt={product.name}
-                      style={{ width: "50px", height: "50px", objectFit: "cover" }}
-                    />
-                  </td>
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{groupBasket[product.id] || 0}</td>
-                  <td>
-                    {editingGroupBasket[product.id] ? (
-                      <button onClick={() => handleConfirm(product.id)}>
-                        Confirm Quantity
-                      </button>
-                    ) : (
-                      <>
-                        <button onClick={() => handleIncrement(product.id)}>
-                          +
-                        </button>
-                        <button onClick={() => handleDecrement(product.id)}>
-                          -
-                        </button>
-                        <button onClick={() => handleStartEdit(product.id)}>
-                          Edit
-                        </button>
-                      </>
-                    )}
+            {/* User's Basket Items */}
+            {userBasketProducts.length > 0 && (
+              <>
+                {userBasketProducts.map(renderProductRow)}
+                <tr>
+                  <td colSpan={activeTab === "basket" ? "5" : "4"} style={{ fontWeight: "bold", textAlign: "center" }}>
+                    Other items in the group's basket
                   </td>
                 </tr>
-              );
-            })}
-  
+              </>
+            )}
+
+            {/* Group's Basket Items */}
+            {groupProducts.map(renderProductRow)}
+
             {/* Total Price Row */}
             <tr className="total-row">
-              <td colSpan="2" style={{ textAlign: "right", fontWeight: "bold" }}>
+              <td colSpan={activeTab === "basket" ? "3" : "2"} style={{ textAlign: "right", fontWeight: "bold" }}>
                 Total:
               </td>
-              <td colSpan="3" style={{ textAlign: "left", fontWeight: "bold" }}>
+              <td colSpan={activeTab === "basket" ? "2" : "2"} style={{ textAlign: "left", fontWeight: "bold" }}>
                 £
                 {groupProducts
+                  .concat(userBasketProducts)
                   .reduce((total, product) => {
                     const numericPrice = parseFloat(product.price.replace("£", "")) || 0;
                     const quantity = groupBasket[product.id] || 0;
@@ -173,7 +180,7 @@ function GroupOrderPage() {
         </table>
       </div>
     </div>
-  );  
+  );
 }
 
 export default GroupOrderPage;
