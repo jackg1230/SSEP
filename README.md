@@ -1,3 +1,4 @@
+# REPO https://github.com/jackg1230/SSEP
 # SSEP to view project please go to [94.174.1.192:3001/](http://94.174.1.192:3001/) or alternativly run npm start in the /frontend/src/ DIR
 # TESTING LOGS CAN BE VIEWED IN /frontend/src/tests and /backend/src/tests respectivly and use t@t.com and 123 for email and password
 # PLANNING DOCUMENT CAN BE FOUND Planning - discord.txt
