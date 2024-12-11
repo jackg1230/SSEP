@@ -1,4 +1,5 @@
 What was accomplished:
+Based on Rowans EDR:
 We have created a full-stack application which allows users to login/register, 
 view items currently on offer within our homepage and information about them such as the current offer, a description of the item and the price of the item.
 Users can directly add items from the homepage to their shopping basket or they can navigate to different tabs;
