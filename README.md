@@ -1,5 +1,8 @@
 # SSEP
-SSEP
+# TESTING LOGS CAN BE VIEWED IN /frontend/src/tests and /backend/src/tests respectivly
+# PLANNING DOCUMENT CAN BE FOUND Planning - discord.txt
+# REFLECTIONS CAN BE FOUND IN /Report
+
 Tasks - Read EDR
       - Allocate Roles
       - Start Jobs
