@@ -11,6 +11,9 @@ Our Database also stores information about each user, such as the items in their
 personal settings and the date for their scheduled delivery.
 
 How this was accomplished:
+Regular Team meetings on discord across the project timeline (2x a week). The group worked to establish who would focus on each part of the prototype in line with Rowan's EDR.
+We used paint to draw mock webpages for our design which can be found within the Supporting_material folder. Roles were divided based on strengths, Rowan and Jack worked on backend 
+development whereas Lucas and Ethan worked on the frontend. Allowing for parallel development.
 Jack & Rowan 400words for backend & search page (can't remember who developed that page)
 Lucas 200 words for homepage and groupOrderPage
 Ethan 200 words for settings & Delivery date system
