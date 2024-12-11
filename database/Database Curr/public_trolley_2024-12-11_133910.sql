@@ -1,0 +1,9 @@
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (8, 4, 13, 7);
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (14, 1, 14, 7);
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (17, 2, 15, 7);
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (10, 48, 17, 7);
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (16, 4, 11, 7);
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (16, 4, 12, 7);
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (16, 4, 16, 7);
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (16, 4, 8, 6);
+insert into "trolley" ("product_id", "quantity", "trolley_id", "user_id") values (1, 5, 9, 5);
