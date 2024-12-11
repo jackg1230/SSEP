@@ -31,7 +31,6 @@ Toward the end of the project, Rowan’s availability decreased, which understan
 However, this did make contacting him a bit more challenging during the final stages. 
 Improved availability during critical phases could help ensure smoother collaboration and quicker resolutions to last-minute issues.
 
-
 Ethan:
 Ethan made some notable contributions to the project, 
 particularly in the organisation of our initial meeting and the efficient code he wrote for the delivery date scheduling system. 
