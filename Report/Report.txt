@@ -1,0 +1,15 @@
+What was accomplished:
+We have created a full-stack application which allows users to login/register, 
+view items currently on offer within our homepage and information about them such as the current offer, a description of the item and the price of the item.
+Users can directly add items from the homepage to their shopping basket or they can navigate to different tabs;
+such as the search tab where users can search for all products within the database and find out information about them and add them to their basket. 
+Users can view and edit their basket and view the total basket for all members of their house including a total price.
+Users can also select a date for delivery and edit their basket to be private within the settings page.
+We have implemented a database which at the start of each day pings the Supermarket API and gets an update on all product information such as stock levels and offers. 
+Our Database also stores information about each user, such as the items in their trolley, the house which they are a part of, their username and password,
+personal settings and the date for their scheduled delivery.
+
+How this was accomplished:
+Jack & Rowan 400words for backend & search page (can't remember who developed that page)
+Lucas 200 words for homepage and groupOrderPage
+Ethan 200 words for settings & Delivery date system
