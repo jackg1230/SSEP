@@ -17,7 +17,7 @@ Implement program to update database from shops:
 		Check file runs without errors
 		Check to see if correct items have been added to database
 		Check connection is closed correctly
-	Products are not fetched from actual supermarket website but from a sample selection 	of Json files due to the implication of web scraping and lack of API's
+	Products are not fetched from actual supermarket website but from a sample selection of Json files due to the implication of web scraping and lack of API's
  
 Implemented Node API to process requests targeted to the database:
 	Tests to be ran:
