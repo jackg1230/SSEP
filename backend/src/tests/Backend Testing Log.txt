@@ -1,0 +1,54 @@
+Backend Testing Log:
+Establish server and open ports to allow communication.
+	tests to be ran: 
+		Use SSH to make to connect to the server 
+		Check correct package versions installed
+	All Tests Passed
+
+Implement Database on server:
+	Test to be ran:
+		Connect to postgres database on port 5432
+		sample query to select users
+		sample query to add to trolley
+	All Tests Passed
+
+Implement program to update database from shops:
+	Tests to be ran:
+		Check file runs without errors
+		Check to see if correct items have been added to database
+		Check connection is closed correctly
+	Products are not fetched from actual supermarket website but from a sample selection 	of Json files due to the implication of web scraping and lack of API's
+ 
+Implemented Node API to process requests targeted to the database:
+	Tests to be ran:
+		Ensure the current version of node is installed - Failed - Node package was then updated 
+		Run sample query on Node server to ensure correct connection with database
+		Ensure port 3000 is open to allow communication with server
+	All Tests passed after minor change
+
+
+I will be using the curl Linux command to test the output of the api
+	UPDATE - Had to add the -K modifier to the curl command due to insecure connection to http server
+	Create a basic user API which fetches the email of all users when called - PASS
+	Create an API that returns the product table in its entirety, allowing it to be displayed on the product page - PASSED
+	For Lucas product page - Create an API that returns the information of all products that currently have discounts on - PASSED 
+
+THUS FAR - all test passed ensuring home page and search page are operating as intended - Aiming to complete login and adding to trolley in the next iteration.
+CONTINUATION - I will be creating a login API that returns a user_id, house_id and public_trolley when an email and password are entered
+	Tests to be ran:
+		Can email be entered? - PASS
+		Are invalid emails caught client side? - PASS
+		Are the correct details returned? - PASS
+		Are users informed if incorrect details are entered - PASS
+		Are users informed if username and or password is wrong - FAIL
+	in Hindsight we decided that accounts would be more secure if the user was unaware whether it was the username or password which was incorrect
+
+Establish ability to add items to trolley 
+	Tests:
+		Use Curl to test API, artificially adding items to the trolley
+		Use React page to add items to the trolley and ensure they can be viewed in the database
+	ALL TESTS PASSED
+		
+		
+	
+	
