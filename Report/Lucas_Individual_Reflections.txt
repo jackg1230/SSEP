@@ -1,0 +1,50 @@
+Jack:
+Jack has made significant contributions to the project, particularly in the sheer volume of work completed. His work ethic was evident throughout, 
+and he consistently ensured the project stayed on track. 
+The backend of completed extremely quickly and efficiently which allowed frontend development to be focused on 
+and worked on without any delays waiting for backend development. 
+Jack's willingness to help and share knowledge with the team improved the speed at which 
+we were able to complete this project greatly. 
+He was especially supportive in teaching me how to communicate effectively with the backend from the frontend of the application. 
+His ability to explain complex concepts in a clear and approachable way not only helped me personally but also strengthened the team’s overall productivity. 
+Another strength of Jack’s was his availability and excellent communication. Throughout the project, whenever anybody had any questions or needed assistance, 
+he was readily available and provided prompt, thoughtful responses. This responsiveness created a collaborative and efficient working dynamic, 
+which was crucial to the project's success. 
+That said, one area where Jack could further enhance his already impressive contributions is by including more comments in his code. 
+While his technical work is highly effective, additional comments would improve the code clarity and readability. 
+This would be particularly helpful for team members who may need to build upon or troubleshoot his code in the future. 
+By making his code more accessible through clear documentation, he could further strengthen the team’s ability to collaborate effectively.
+
+Rowan:
+Rowan has been a very approachable member of the team, which made working on this project a pleasant and collaborative experience. 
+He always demonstrates a strong commitment to the project by writing substantial amounts of code and dedicating lots of time to debugging and fixing errors, 
+not only in his own work but also in mine which saved me lots of time struggling to fix parts of my code which I didn’t quite understand how to fix. 
+This level of dedication ensured the project progressed smoothly and helped maintain high-quality code. 
+Rowan provided the Engineering Design Review (EDR) for the project. This was a crucial part of our system design, 
+when any member of the team struggled to figure out how to implement part of the EDR 
+Rowan was very willing to explain how different parts of the system should be implemented 
+was incredibly helpful. His clear guidance helped me better understand the structure and logic of the application, allowing for better teamwork. 
+Rowan’s coding skills were impressive, and the code he produced was effective and well thought out. 
+However, one area for potential improvement would be the inclusion of additional comments in his code. 
+More detailed documentation would make the code easier for others to understand and troubleshoot if necessary. 
+Toward the end of the project, Rowan’s availability decreased, which understandably happens sometimes. 
+However, this did make contacting him a bit more challenging during the final stages. 
+Improved availability during critical phases could help ensure smoother collaboration and quicker resolutions to last-minute issues.
+
+Ethan:
+Ethan:
+Ethan made some notable contributions to the project, 
+particularly in the organisation of our initial meeting and the efficient code he wrote for the delivery date scheduling system. 
+This functionality was a key part of our application, and Ethan’s ability to implement it effectively and quickly was a significant asset to the team. 
+Additionally, he was approachable and helpful when it came to writing the documentation for the project. 
+His willingness to assist with this task ensured that our work was well-documented and aligned with the project requirements. 
+Ethan’s availability was quite limited during the earlier stages of the project. While he helped organise the first meeting, 
+his reduced involvement afterward made it quite challenging to coordinate efforts and maintain momentum in the early phases. 
+This was particularly noticeable as the team worked to define our workflow and divide responsibilities, 
+without Ethans help at this stage we had to work harder on the frontend to ensure we didn’t fall behind schedule. 
+However, Ethan’s engagement improved significantly toward the end of the project. During this important phase, 
+he stepped up to contribute additional code implementations and provided valuable support with documentation. 
+This late-stage involvement was much appreciated and helped the team finalise key aspects of the project in time for completion. 
+Moving forward, maintaining more consistent availability throughout the entire project lifecycle would make collaboration more seamless and productive. 
+Ethan’s technical skills and contributions were valuable, and with greater participation earlier on, 
+his impact on the project could have been even more significant.
