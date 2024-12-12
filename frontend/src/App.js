@@ -8,7 +8,6 @@ import Homepage from './components/Homepage/Homepage';
 import SettingsPage from './components/Settings/SettingsPage';
 import GroupOrderPage from './components/GroupOrder/GroupOrderPage';
 import SearchPage from "./components/SearchPage/SearchPage";
-import CalendarPage from "./components/Calendar/CalendarPage";
 import CategoryPage from "./components/Category/CategoryPage";
 
 function AppContent() {
@@ -23,7 +22,6 @@ function AppContent() {
           <Route path="/home" element={<Homepage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/orders" element={<GroupOrderPage />} />
-          <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/category/:categoryName" element={<CategoryPage />} />
         </Routes>
