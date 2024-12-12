@@ -3,12 +3,14 @@ import "./Homepage.css";
 import { useUser } from "../../context/UserContext";
 import Categories from "./Categories";
 
+
 function Homepage() {
   const { user } = useUser(); // Access user data from context
   const [products, setProducts] = useState([]);
   const [basket, setBasket] = useState({}); // Track quantities for products added to the basket
   const [editingBasket, setEditingBasket] = useState({}); // Tracks whether the user is editing a basket for a product
   const [expandedRow, setExpandedRow] = useState(null); // Tracks which row is expanded
+  var loaded = false;
 
   // Fetch products from API
   useEffect(() => {
@@ -113,6 +115,19 @@ function Homepage() {
       console.error("Error confirming basket item:", error);
     }
   };
+  function deliveryAlert() {
+    alert("You have a delivery due on the:");
+}
+
+// Check if the function has already been called using session storage
+if (!sessionStorage.getItem('functionExecuted')) {
+    // Mark that the function has been executed
+    sessionStorage.setItem('functionExecuted', 'true');
+
+    // Call the function
+    deliveryAlert();
+}
+  
 
   return (
     <div className="homepage">
