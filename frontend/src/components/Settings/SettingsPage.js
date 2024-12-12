@@ -78,6 +78,9 @@ function SettingsPage() {
           </div>
         </label>
       </div>
+      <p>Choose Delivery Participants</p>
+      <p>Choose Delivery Address</p>
+      <p>Choose Payment Details</p>
     </div>
   );
 }
