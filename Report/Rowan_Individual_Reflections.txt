@@ -1,0 +1,14 @@
+Lucas:
+Lucas’ extensive work on the frontend, communication and organisation skills were integral to the project by building an effective and user friendly frontend. He completed the majority his work within the first 2 weeks allowing Jack and I to focus on the backend and building the APIs. I believe his expansive knowledge of React, JavaScript and CSS allowed him to do so. His notable work on building the tests for the project became extremely useful in finding logical errors and bugs. When problems arose whether that was uncertainty on implementation from the EDR he was always quick to communicate with the team and resolve this.
+Lucas’ eagerness to work helped motivated the rest of the team keeping us dedicated to consistent work and excited about what he has done next. He often went ahead of the backend team showing us what requests need to be made and this helped set the pace of developing the project.
+An area Lucas’ could have improved on was learning how to implement the requests from the server into the frontend as this did fall under his domain of the frontend but had to be completed by the backend team.
+
+Jack:
+Jack’s expertise in using a server to host the backend services made the developing the database and server file much easier. After we organised our tasks in the first meeting Jack immediately set off to work by setting up his server so I could get to work on the database. Jack’s extensive work and abundant knowledge about port forwarding, screens and in general using the server was extremely useful. Despite not being too familiar with the frameworks at first, he quickly adapted and was able to begin work almost immediately. 
+Another strength was how available he was to communicate with the team and help resolve any uncertainties. This definitely helped increase the teams productivity as he was very prompt at answering the team’s questions.
+The only place Jack could improve his work is ensuring the purpose of his code is made clear through comments or adding descriptions to his commits as at times I was uncertain as to the purpose of the functions he produced. I believe this is likely due to it being one of his first times developing software in a group.
+
+Ethan:
+Ethan’s assistance in organising the project set us off in the right direction by coordinating the initial meeting. However, his work throughout the project was not consistent.
+His contributions improved in the later stages when he began working on the frontend calendar and settings pages, which were some of the more challenging frontend components to create.
+Unfortunately, due to his lack of communication in the earlier stages, much of the work assigned to him had to be completed by the rest of the team to ensure it was finished by the project deadline.

@@ -10,16 +10,18 @@ import GroupOrderPage from './components/GroupOrder/GroupOrderPage';
 import SearchPage from "./components/SearchPage/SearchPage";
 import CalendarPage from "./components/Calendar/CalendarPage";
 import CategoryPage from "./components/Category/CategoryPage";
+import RegisterPage from "./components/Login/RegisterPage";
 
 function AppContent() {
     const location = useLocation();
-    const showHeader = location.pathname !== "/";
+    const showHeader = location.pathname !== "/" && location.pathname !== "/register";
   
     return (
       <>
         {showHeader && <Header />}
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/home" element={<Homepage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/orders" element={<GroupOrderPage />} />
