@@ -1,0 +1,61 @@
+Update Log - Goes with commits
+
+1.
+Shop API
+created python script to fetch items from shop (JSON File). Creates new record for new items or updates existing ones for current products in the PostgreSQL database.
+
+
+2. 
+Updated Database system
+Now we have multiple shops in different JSON files. This simulates various shops and gives the user greater choice. The price field now uses the MONEY type and shops are accurate to real world.
+
+
+3.
+DATABASE
+uploaded the current database to the GIT from the server
+
+4.
+Updated index.js
+Updated the index backend file to use our server to run the file instead of a local version.
+
+5.
+demo to output emails
+I created a demo API call to fetch all the users emails from the database.
+
+6. 
+Uploaded index to server and installed node
+I finally uploaded the index file to the server and added some more usability adding a new query to select all a users details. I installed node on the server which allowed us to communicate with it on 94.174.1.192
+
+7.
+Fixed user POST
+fixed user post by updating fields that had changed. A change in the database layout meant that the code had to be altered to suit a new field.
+
+8.
+house and user creation
+allowed for house to be created if new user signs up. Added an API call that allowed for a new users details to be submitted. If the user enters the details of a house already created they will be automatically added.
+
+9.
+created a search get
+Created a new GET command that would take the letters of a product name and return the desired product. This operated when a new letter was entered allowing for live updates as the user typed.
+
+10.
+renamed Test.py and added user detail fetch
+Created a new API call that would return a users id and house id when an email and password was entered. This would be used on the login page by loggin the user in when details were returned.
+
+11.
+Adding to and from trolley
+Created a new function that allows items to be added to the trolley using the stored user_id from the login page.
+
+12.
+updated Home page
+I updated the home page to display the users ID and to display all the products that were currently on offer.
+
+13.
+updated search bar
+I updated the search bar to match descriptions or product names and actively show them to the user in the newly created search page. users could add the item to the trolley from this page too.
+
+15.
+Updating backend files to ensure consiseness and readability
+
+
+
