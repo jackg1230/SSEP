@@ -76,6 +76,8 @@ function SettingsPage() {
             />
             <span className="slider" />
           </div>
+        </label>
+        <label className = "toggle-label2">House Tenants</label>
           <div className="toggle-radio1">
             <form>
               <input type="radio" id="user4"></input>
@@ -86,6 +88,7 @@ function SettingsPage() {
               <label for="user6">User 6</label><br></br>
             </form>
           </div>
+          <label className = "toggle-label3">House Addresses</label>
           <div className="toggle-radio2">
             <form>
               <input type="radio" id="addr1"></input>
@@ -96,7 +99,6 @@ function SettingsPage() {
               <label for="addr3">126 Tiverton Road</label><br></br>
             </form>
           </div>
-        </label>
       </div>
     </div>
   );
