@@ -76,6 +76,7 @@ function SettingsPage() {
             />
             <span className="slider" />
           </div>
+          <div className="toggle-dropdown"></div>
         </label>
       </div>
     </div>

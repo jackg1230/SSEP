@@ -12,10 +12,10 @@ function CalendarPage() {
             minDate: "today",
             onChange: function (selectedDates, dateStr, instance) {
                 // If more than 3 dates are selected, remove the most recently added date
-                if (selectedDates.length > 3) {
+                if (selectedDates.length > 1) {
                     selectedDates.pop();
                     instance.setDate(selectedDates, false); // Update the Flatpickr instance
-                    alert("Maximum of 3 dates allowed!");
+                    alert("Maximum of 1 date allowed!");
                 }
             },
         });
