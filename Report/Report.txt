@@ -15,6 +15,39 @@ Regular Team meetings on discord across the project timeline (2x a week). The gr
 We used paint to draw mock webpages for our design which can be found within the Supporting_material folder. Roles were divided based on strengths, Rowan and Jack worked on backend 
 development whereas Lucas and Ethan worked on the frontend. Allowing for parallel development.
 
-Our primary focus on the back end side was creating an application that was actually hosted on a live sever that could be accessed by anyone, anywhere, true to our EDR. We started by selecting Jacks Rasperry pi as a server and opened the required ports to get the project up and running (22,5432,3000,3001). Once this server was establish we were able to SSH into it and install all the packages required to create a PostgreSQL server and access it from anywhere. We used postgresql as we were well acquainted with it after using it in modules last year. Once the Database was established we made a plan and drew up a database diagram with links between tables to indicate relations and keys. This allowed us to efficiently and effectively create the tables and establish a working basis. Jack then took the next step to create an API that would fetch product data from simulated supermarket files whilst Rowan focused his efforts on creating a node server for the API. The python file would iterate through a folder of JSON files relating to different supermarkets and update the database to ensure the product table always reflected the current supermarket prices and stock. Using the psycopg2 library we were easily able to connect to the database and make fast, efficient changes. Rowan's focus on the API led him to establish a node server on the database running on port 3000. We used screens to keep the node server running and allow us both to access it at any time through the command line. After the index.js node file was establish we both worked on creating various calls that would allow data to be fetched from the database without any client side interaction. This let us restrict what could be pulled from the database and limited to the API calls we made. We started by creating an API that would fetch all the products and there information and followed this up with creating a call that would fetch all the products on sale. The next step was to create a login page which when an email and hashedpassword was posted a user_id and house_id would be returned via a GET call. The final step for the backend was creating an feature to allow items to be added to the trolley. This used a another simple database query. 
-Lucas 200 words for homepage and groupOrderPage
-Ethan 200 words for settings & Delivery date system
+Our primary focus on the back end side was creating an application that was actually hosted on a live sever that could be accessed by anyone, anywhere, true to our EDR.
+We started by selecting Jacks Rasperry pi as a server and opened the required ports to get the project up and running (22,5432,3000,3001).
+Once this server was establish we were able to SSH into it and install all the packages required to create a PostgreSQL server and access it from anywhere.
+We used postgresql as we were well acquainted with it after using it in modules last year. 
+Once the Database was established we made a plan and drew up a database diagram with links between tables to indicate relations and keys. 
+This allowed us to efficiently and effectively create the tables and establish a working basis.
+Jack then took the next step to create an API that would fetch product data from simulated supermarket
+files whilst Rowan focused his efforts on creating a node server for the API. The python file would iterate through a folder of JSON files relating to different
+supermarkets and update the database to ensure the product table always reflected the current supermarket prices and stock.
+Using the psycopg2 library we were easily able to connect to the database and make fast, efficient changes.
+Rowan's focus on the API led him to establish a node server on the database running on port 3000. 
+We used screens to keep the node server running and allow us both to access it at any time through the command line. 
+After the index.js node file was establish we both worked on creating various calls that would allow data to be fetched from the database without any client side interaction. 
+This let us restrict what could be pulled from the database and limited to the API calls we made. 
+We started by creating an API that would fetch all the products and there information and followed this up with creating a call that would fetch all the products on sale. 
+The next step was to create a login page which when an email and hashedpassword was posted a user_id and house_id would be returned via a GET call. 
+The final step for the backend was creating an feature to allow items to be added to the trolley. This used a another simple database query. 
+
+Frontend development began with a basic homepage which would be the first page the user would see once logged in. 
+This page displays a table which is dynamically populated with 
+data from the backend which is classifised within the database as being on sale using the following request: "http://94.174.1.192:3000/api/products/fetch?field=Promotion". 
+User can then add these products to their basket via the following POST request: "http://94.174.1.192:3000/api/trolley/add". 
+Next the search page was added which allowed users to directly access the database and search for all products within it. 
+Both of these pages allow users to add items to their basket of any quantity of the users 
+choosing using functions to handle incrementing and decrementing the quantity. Once the quantity hits 0 it can no longer be lowered. 
+Next the groupOrderPage was implemented which consisted of two tables. 
+The first displayed an individuals basket where the user could add or remove items using the same increment 
+and decrement functions previously created, they could then click a button and this new quantity would be sent to the database. 
+If the quantity was 0 the item was removed from the users basket. 
+The two tables were displayed seprately and could be accessed by the active tabs, depending on which tab was 
+active a different table would be displayed allowing users ot seamlessly switch between baskets. Both baskets display a total price, 
+allowing the group to see if the total order 
+potentially qualifies them for a discount etc. The settings page allows users to be able to private their basket from other users in the house. 
+This is a simple POST request to the database and allows extra privacy for users. The calendar page allows users to select a delviery date for their order, 
+We imported a pre-exisiting calendar and it allows users to pick a data which is then sent to the database. 
+When logging in next users will recieve a notification telling them when their delivery is due.
