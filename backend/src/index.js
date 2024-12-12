@@ -67,6 +67,26 @@ app.get('/api/trolley', async (req, res) => {
     }
 });
 
+// Fetch delivery dates for a house
+app.get('/api/delivery-dates', async (req, res) => {
+    const { house_id } = req.query; // Extract house_id from query parameters
+    try {
+        const query = `
+            SELECT "Delivery_Date"
+            FROM "orders"
+            WHERE "house_id" = $1;
+        `;
+        const values = [house_id]; // Provide the house_id as a parameter
+        const result = await pool.query(query, values);
+        
+        res.status(200).json({ deliveryDates: result.rows }); // Return the delivery dates
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch delivery dates' });
+    }
+});
+
+
 app.get('/api/group-trolley', async (req, res) => {
     const { user_id } = req.query;
     try {
