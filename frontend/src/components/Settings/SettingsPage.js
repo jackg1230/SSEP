@@ -76,7 +76,26 @@ function SettingsPage() {
             />
             <span className="slider" />
           </div>
-          <div className="toggle-dropdown"></div>
+          <div className="toggle-radio1">
+            <form>
+              <input type="radio" id="user4"></input>
+              <label for="user4">User 4</label><br></br>
+              <input type="radio" id="user5"></input>
+              <label for="user5">User 5</label><br></br>
+              <input type="radio" id="user6"></input>
+              <label for="user6">User 6</label><br></br>
+            </form>
+          </div>
+          <div className="toggle-radio2">
+            <form>
+              <input type="radio" id="addr1"></input>
+              <label for="addr1">26 Tiverton Road</label><br></br>
+              <input type="radio" id="addr2"></input>
+              <label for="addr2">94 Teinmouth Road</label><br></br>
+              <input type="radio" id="addr3"></input>
+              <label for="addr3">126 Tiverton Road</label><br></br>
+            </form>
+          </div>
         </label>
       </div>
     </div>
