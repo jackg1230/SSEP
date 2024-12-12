@@ -18,27 +18,35 @@ header h1 {
   margin-bottom: 20px;
 }
 
-.tabs {
-  padding: 10px 20px;
-  font-size: 14px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4180be;
+#button-1 {
+  background-color: #007bff;
   color: white;
-  font-weight: bold;
-  cursor: pointer;
+  font-weight: bold; 
   transition: background-color 0.3s ease, color 0.3s ease;
-  margin-right: 10px;
-  white-space: nowrap;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+  border: 1px solid #0056b3; 
 }
+#button-2 {
+  background-color: #007bff;
+  color: white; 
+  font-weight: bold; 
+  transition: background-color 0.3s ease, color 0.3s ease; 
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+  border: 1px solid #0056b3; 
+}
+
 
 .switch-button:hover {
   background-color: #6aaef1;
 }
 
 .switch-button.active {
-  background-color: #007bff;
-  color: white;
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  font-weight: bold; /* Bold text */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add subtle shadow */
+  border: 1px solid #0056b3; /* Border to match hover state */
 }
 
 .table-container {

@@ -109,13 +109,13 @@ function GroupOrderPage() {
   return (
     <div className="group-order-page">
       <div className="tabs">
-        <button
+        <button id="button-1"
           className={activeTab === "basket" ? "active-tab" : ""}
           onClick={() => setActiveTab("basket")}
         >
           Individual Basket
         </button>
-        <button
+        <button id="button-2"
           className={activeTab === "group" ? "active-tab" : ""}
           onClick={() => setActiveTab("group")}
         >
