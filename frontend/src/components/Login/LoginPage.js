@@ -1,7 +1,6 @@
 import "./Login.css";
-
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom"; // Import Link for navigation to registration page
 import { useUser } from "../../context/UserContext"; // Import UserContext for managing user state
 
 function Login() {
@@ -37,8 +36,6 @@ function Login() {
     }
   };
 
-  
-
   return (
     <section id="LoginPage">
       <div id="LoginPage-container">
@@ -66,10 +63,15 @@ function Login() {
           <button type="submit" className="login-button">
             Login
           </button>
-          
         </form>
 
-        
+        {/* Link to registration page */}
+        <div id="Register-Link">
+          <p>Don't have an account?</p>
+          <Link to="/register" className="register-link">
+            Register Here
+          </Link>
+        </div>
       </div>
     </section>
   );
