@@ -115,17 +115,34 @@ function Homepage() {
       console.error("Error confirming basket item:", error);
     }
   };
-  function deliveryAlert() {
-    alert("You have a delivery due on the:");
-}
 
-// Check if the function has already been called using session storage
-if (!sessionStorage.getItem('functionExecuted')) {
-    // Mark that the function has been executed
-    sessionStorage.setItem('functionExecuted', 'true');
+  useEffect(() => {
+    const fetchProducts = async () => {
+        try {
+            console.log(user.house_id);
+            const response = await fetch(`http://94.174.1.192:3000/api/delivery-dates?house_id=${user.house_id}`);
+            const data = await response.json();
 
-    // Call the function
-    deliveryAlert();
+            // Extract delivery dates from the response
+            const deliveryDates = data.deliveryDates.map(item => item.Delivery_Date);
+
+            if (deliveryDates && deliveryDates.length > 0) {
+                deliveryAlert(deliveryDates);
+            } else {
+                console.log("No delivery dates available.");
+            }
+        } catch (error) {
+            console.error("Error fetching delivery dates:", error);
+        }
+    };
+
+    if (user?.house_id) {
+        fetchProducts();
+    }
+}, [user?.house_id]);
+
+function deliveryAlert(dates) {
+    alert(`You have a delivery due on the following dates:\n${dates.join(", ")}`);
 }
   
 
