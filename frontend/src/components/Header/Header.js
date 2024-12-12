@@ -23,7 +23,6 @@ function Header() {
                     <li><Link to="/home">Home</Link></li>
                     <li><Link to="/search">Search for Products</Link></li>
                     <li><Link to="/orders">View Orders</Link></li>
-                    <li><Link to="/calendar">Calendar</Link></li>
                     <li><Link to="/settings">Settings</Link></li>
                     
                     
