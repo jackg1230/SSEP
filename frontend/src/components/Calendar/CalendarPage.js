@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./CalendarPage.css";
+
 import { useUser } from "../../context/UserContext";
 import flatpickr from "flatpickr";
 
@@ -31,3 +31,4 @@ function CalendarPage(){
         </div>
     );
 }
+export default CalendarPage;
