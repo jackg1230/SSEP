@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//import "./SettingsPage.css"; // Add your CSS for styling the toggle switch
+import "./SettingsPage.css"; // Add your CSS for styling the toggle switch
 import { useUser } from "../../context/UserContext";
 
 function SettingsPage() {
